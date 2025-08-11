@@ -1,0 +1,96 @@
+[gd_scene load_steps=7 format=3 uid="uid://ju6dgq666lkl"]
+
+[ext_resource type="Script" path="res://scripts/game_area_scripts/game_area_header.gd" id="1_dmu2b"]
+[ext_resource type="Texture2D" uid="uid://t8s8c5vv1ku7" path="res://assets/images/game_area_header/Rectangle 19.png" id="2_1u1bw"]
+[ext_resource type="Texture2D" uid="uid://bwisw7nj0n5ug" path="res://assets/buttons/Exit Button (2).png" id="3_f2sqy"]
+[ext_resource type="Texture2D" uid="uid://dgg2ekdjk0k82" path="res://assets/images/game_area_header/Rectangle 22 (2).png" id="4_f33tq"]
+[ext_resource type="Texture2D" uid="uid://bejq0620t2vdp" path="res://assets/icons/Clock.png" id="5_mbx7w"]
+[ext_resource type="Texture2D" uid="uid://bgkduio1wcnbe" path="res://assets/buttons/Info Button (1).png" id="6_qb0vw"]
+
+[node name="Game Area Header" type="Control"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+script = ExtResource("1_dmu2b")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="HeaderBackground" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_1u1bw")
+
+[node name="MarginHeader" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 15
+
+[node name="HeaderContainer" type="HBoxContainer" parent="MarginHeader"]
+layout_mode = 2
+theme_override_constants/separation = 75
+
+[node name="ExitButton" type="TextureButton" parent="MarginHeader/HeaderContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_f2sqy")
+
+[node name="ControlSpacer1" type="Control" parent="MarginHeader/HeaderContainer"]
+layout_mode = 2
+
+[node name="TimerContainer" type="PanelContainer" parent="MarginHeader/HeaderContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TimerBackground" type="TextureRect" parent="MarginHeader/HeaderContainer/TimerContainer"]
+layout_mode = 2
+texture = ExtResource("4_f33tq")
+stretch_mode = 3
+
+[node name="TimerControl" type="Control" parent="MarginHeader/HeaderContainer/TimerContainer"]
+layout_mode = 2
+
+[node name="TimerIcon" type="TextureRect" parent="MarginHeader/HeaderContainer/TimerContainer/TimerControl"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 13.0
+offset_top = -22.0
+offset_right = 67.0
+offset_bottom = 22.0
+grow_vertical = 2
+texture = ExtResource("5_mbx7w")
+
+[node name="TimerLabel" type="Label" parent="MarginHeader/HeaderContainer/TimerContainer/TimerControl"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -84.0
+offset_top = -34.0
+offset_right = -29.0
+offset_bottom = 33.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "30
+"
+horizontal_alignment = 1
+
+[node name="ControlSpacer2" type="Control" parent="MarginHeader/HeaderContainer"]
+layout_mode = 2
+
+[node name="InfoButton" type="TextureButton" parent="MarginHeader/HeaderContainer"]
+layout_mode = 2
+texture_normal = ExtResource("6_qb0vw")
