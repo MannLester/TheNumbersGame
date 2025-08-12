@@ -11,15 +11,16 @@ config_version=5
 [application]
 
 config/name="TheNumbersGame"
-run/main_scene="res://scenes/game_area_page/game_area_header.tscn"
+run/main_scene="res://scenes/authentication_page/authentication_page.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
-config/icon="res://icon.svg"
+config/icon="res://assets/icons/icon.svg"
 
 [display]
 
 window/size/viewport_width=720
 window/size/viewport_height=1280
 window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 window/handheld/orientation=1
 
 [dotnet]

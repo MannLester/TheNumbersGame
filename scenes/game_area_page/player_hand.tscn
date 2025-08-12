@@ -1,0 +1,127 @@
+[gd_scene load_steps=4 format=3 uid="uid://coc4vgojynite"]
+
+[ext_resource type="Texture2D" uid="uid://nmdl015xabs5" path="res://assets/icons/Counter (3).png" id="1_rlj8l"]
+[ext_resource type="Texture2D" uid="uid://cd78wh5svupi6" path="res://assets/icons/Divide Icon (3).png" id="2_be6w8"]
+[ext_resource type="Texture2D" uid="uid://b634mnc7oiyou" path="res://assets/buttons/Draw Button (2).png" id="3_1hhja"]
+
+[node name="PlayerHand" type="Control"]
+custom_minimum_size = Vector2(0, 370)
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 80
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer/Control"]
+layout_mode = 0
+offset_left = -60.0
+offset_top = 10.0
+offset_right = 66.0
+offset_bottom = 48.0
+color = Color(0.85098, 0.85098, 0.85098, 1)
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Control/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "Your Cards: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/Control"]
+layout_mode = 2
+offset_left = 58.0
+offset_right = 116.0
+offset_bottom = 58.0
+texture = ExtResource("1_rlj8l")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Control/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+horizontal_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 500
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/Control"]
+layout_mode = 0
+offset_left = 49.0
+offset_top = 11.0
+offset_right = 178.0
+offset_bottom = 51.0
+color = Color(0.85098, 0.85098, 0.85098, 1)
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/Control/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Operator"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_be6w8")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/Control/TextureRect"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="TextureButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture_normal = ExtResource("3_1hhja")
+
+[node name="HScrollBar" type="HScrollBar" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HScrollBar"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
