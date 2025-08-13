@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://cfn6r8ehvra2t"]
+[gd_scene load_steps=2 format=3 uid="uid://w2tn7iqfhscl"]
 
-[ext_resource type="Texture2D" uid="uid://djyn3djxoolxs" path="res://assets/cards/card1-25/card1.jpg" id="1_xoxia"]
+[ext_resource type="Texture2D" uid="uid://b6uj31y6bsiwt" path="res://assets/cards/card_designs/ChatGPT Image Apr 4, 2025, 09_53_30 AM.png" id="1_g1tah"]
 
-[node name="CardNode" type="Control"]
+[node name="EnemyCard" type="Control"]
 clip_contents = true
 custom_minimum_size = Vector2(100, 140)
 layout_mode = 3
@@ -13,12 +13,11 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TextureRect" type="TextureRect" parent="."]
-clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_xoxia")
+texture = ExtResource("1_g1tah")
 expand_mode = 5

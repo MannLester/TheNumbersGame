@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://bfhgpf371px5x"]
+[gd_scene load_steps=7 format=3 uid="uid://bfhgpf371px5x"]
 
 [ext_resource type="PackedScene" uid="uid://ju6dgq666lkl" path="res://scenes/game_area_page/game_area_header.tscn" id="1_uf3g4"]
 [ext_resource type="PackedScene" uid="uid://c3clv562yy1x0" path="res://scenes/game_area_page/player_hand.tscn" id="2_hars2"]
+[ext_resource type="PackedScene" uid="uid://dlw8wf0lfarf1" path="res://scenes/game_area_page/enemy_4_card.tscn" id="3_lu83m"]
+[ext_resource type="PackedScene" uid="uid://bnhftkn8vespa" path="res://scenes/game_area_page/enemy_2_card.tscn" id="4_eepyp"]
+[ext_resource type="PackedScene" uid="uid://dm6e22lpa54x3" path="res://scenes/game_area_page/enemy_3_hand.tscn" id="5_682x0"]
+[ext_resource type="PackedScene" uid="uid://b3noesaby2nth" path="res://scenes/game_area_page/pile_cards.tscn" id="6_5b4ek"]
 
 [node name="Game Area Page" type="Control"]
 layout_mode = 3
@@ -24,4 +28,18 @@ color = Color(0.117647, 0.160784, 0.231373, 1)
 layout_mode = 1
 
 [node name="Player Hand" parent="." instance=ExtResource("2_hars2")]
+layout_mode = 1
+
+[node name="Enemy4 Hand" parent="." instance=ExtResource("3_lu83m")]
+layout_mode = 1
+
+[node name="Enemy2 Hand" parent="." instance=ExtResource("4_eepyp")]
+layout_mode = 1
+
+[node name="Enemy3 Hand" parent="." instance=ExtResource("5_682x0")]
+layout_mode = 1
+offset_top = 3.63998
+offset_bottom = 103.64
+
+[node name="Control" parent="." instance=ExtResource("6_5b4ek")]
 layout_mode = 1

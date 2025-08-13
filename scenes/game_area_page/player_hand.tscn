@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://c3clv562yy1x0"]
+[gd_scene load_steps=8 format=3 uid="uid://c3clv562yy1x0"]
 
 [ext_resource type="FontFile" uid="uid://ew34ab1px4u7" path="res://assets/fonts/poppins/Poppins-Regular.ttf" id="1_relsf"]
 [ext_resource type="Texture2D" uid="uid://cn31ax1k18k3b" path="res://assets/buttons/Draw Button (2).png" id="1_rvoij"]
 [ext_resource type="Texture2D" uid="uid://cofwvo6ec8r62" path="res://assets/icons/Add  Icon (1).png" id="2_057kf"]
 [ext_resource type="Texture2D" uid="uid://bvl7h887skfuo" path="res://assets/icons/Counter (2).png" id="3_07ela"]
 [ext_resource type="FontFile" uid="uid://c2583ujg5wnpc" path="res://assets/fonts/poppins/Poppins-SemiBold.ttf" id="4_26a4u"]
+[ext_resource type="PackedScene" uid="uid://cfn6r8ehvra2t" path="res://scenes/card_node.tscn" id="6_uurad"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eal6h"]
 bg_color = Color(0.85098, 0.85098, 0.85098, 1)
@@ -35,6 +36,7 @@ theme_override_constants/margin_right = 50
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 10
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -86,6 +88,7 @@ texture = ExtResource("2_057kf")
 layout_mode = 2
 
 [node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control2"]
+layout_mode = 0
 offset_top = 4.0
 offset_right = 125.0
 offset_bottom = 35.0
@@ -142,3 +145,38 @@ vertical_alignment = 1
 [node name="TextureButton" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 texture_normal = ExtResource("1_rvoij")
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/MarginContainer2"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer"]
+custom_minimum_size = Vector2(100, 140)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CardNode" parent="MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer" instance=ExtResource("6_uurad")]
+layout_mode = 2
+
+[node name="CardNode2" parent="MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer" instance=ExtResource("6_uurad")]
+layout_mode = 2
+
+[node name="CardNode3" parent="MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer" instance=ExtResource("6_uurad")]
+layout_mode = 2
+
+[node name="CardNode4" parent="MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer" instance=ExtResource("6_uurad")]
+layout_mode = 2
+
+[node name="CardNode5" parent="MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer" instance=ExtResource("6_uurad")]
+layout_mode = 2
+
+[node name="CardNode6" parent="MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer" instance=ExtResource("6_uurad")]
+layout_mode = 2
