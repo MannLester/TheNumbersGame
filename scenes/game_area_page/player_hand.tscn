@@ -1,11 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://coc4vgojynite"]
+[gd_scene load_steps=7 format=3 uid="uid://c3clv562yy1x0"]
 
-[ext_resource type="Texture2D" uid="uid://nmdl015xabs5" path="res://assets/icons/Counter (3).png" id="1_rlj8l"]
-[ext_resource type="Texture2D" uid="uid://cd78wh5svupi6" path="res://assets/icons/Divide Icon (3).png" id="2_be6w8"]
-[ext_resource type="Texture2D" uid="uid://b634mnc7oiyou" path="res://assets/buttons/Draw Button (2).png" id="3_1hhja"]
+[ext_resource type="FontFile" uid="uid://ew34ab1px4u7" path="res://assets/fonts/poppins/Poppins-Regular.ttf" id="1_relsf"]
+[ext_resource type="Texture2D" uid="uid://cn31ax1k18k3b" path="res://assets/buttons/Draw Button (2).png" id="1_rvoij"]
+[ext_resource type="Texture2D" uid="uid://cofwvo6ec8r62" path="res://assets/icons/Add  Icon (1).png" id="2_057kf"]
+[ext_resource type="Texture2D" uid="uid://bvl7h887skfuo" path="res://assets/icons/Counter (2).png" id="3_07ela"]
+[ext_resource type="FontFile" uid="uid://c2583ujg5wnpc" path="res://assets/fonts/poppins/Poppins-SemiBold.ttf" id="4_26a4u"]
 
-[node name="PlayerHand" type="Control"]
-custom_minimum_size = Vector2(0, 370)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eal6h"]
+bg_color = Color(0.85098, 0.85098, 0.85098, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 10
+
+[node name="Player Hand" type="Control"]
+custom_minimum_size = Vector2(0, 300)
 layout_mode = 3
 anchors_preset = 12
 anchor_top = 1.0
@@ -21,107 +30,115 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_right = 30
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_right = 50
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 80
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 2
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 230
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer/Control"]
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control"]
 layout_mode = 0
-offset_left = -60.0
-offset_top = 10.0
-offset_right = 66.0
-offset_bottom = 48.0
-color = Color(0.85098, 0.85098, 0.85098, 1)
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 133.0
+offset_bottom = 35.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_eal6h")
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Control/ColorRect"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-text = "Your Cards: "
-horizontal_alignment = 1
-vertical_alignment = 1
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/Control"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control/Panel/MarginContainer"]
 layout_mode = 2
-offset_left = 58.0
-offset_right = 116.0
-offset_bottom = 58.0
-texture = ExtResource("1_rlj8l")
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Control/TextureRect"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-horizontal_alignment = 1
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 500
-
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-layout_mode = 2
-
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/Control"]
-layout_mode = 0
-offset_left = 49.0
-offset_top = 11.0
-offset_right = 178.0
-offset_bottom = 51.0
-color = Color(0.85098, 0.85098, 0.85098, 1)
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/Control/ColorRect"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_fonts/font = ExtResource("1_relsf")
 text = "Operator"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_057kf")
+
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control2"]
+offset_top = 4.0
+offset_right = 125.0
+offset_bottom = 35.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_eal6h")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control2/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control2/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_relsf")
+text = "Your cards:"
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.333
+anchor_bottom = 0.333
+offset_left = 105.0
+offset_top = -21.979
+offset_right = 149.0
+offset_bottom = 22.021
+texture = ExtResource("3_07ela")
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control2/TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_26a4u")
+theme_override_font_sizes/font_size = 20
+text = "8"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/Control"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("2_be6w8")
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2/Control/TextureRect"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="TextureButton" type="TextureButton" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="TextureButton" type="TextureButton" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
-texture_normal = ExtResource("3_1hhja")
-
-[node name="HScrollBar" type="HScrollBar" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HScrollBar"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+texture_normal = ExtResource("1_rvoij")

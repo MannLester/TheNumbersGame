@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cfn6r8ehvra2t"]
+
+[ext_resource type="Texture2D" uid="uid://djyn3djxoolxs" path="res://assets/cards/card1-25/card1.jpg" id="1_xoxia"]
+
+[node name="CardNode" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_xoxia")
+centered = false

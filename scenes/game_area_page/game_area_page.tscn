@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bfhgpf371px5x"]
 
 [ext_resource type="PackedScene" uid="uid://ju6dgq666lkl" path="res://scenes/game_area_page/game_area_header.tscn" id="1_uf3g4"]
-[ext_resource type="PackedScene" uid="uid://coc4vgojynite" path="res://scenes/game_area_page/player_hand.tscn" id="2_y7gvx"]
+[ext_resource type="PackedScene" uid="uid://c3clv562yy1x0" path="res://scenes/game_area_page/player_hand.tscn" id="2_hars2"]
 
 [node name="Game Area Page" type="Control"]
 layout_mode = 3
@@ -23,5 +23,5 @@ color = Color(0.117647, 0.160784, 0.231373, 1)
 [node name="Game Area Header" parent="." instance=ExtResource("1_uf3g4")]
 layout_mode = 1
 
-[node name="PlayerHand" parent="." instance=ExtResource("2_y7gvx")]
+[node name="Player Hand" parent="." instance=ExtResource("2_hars2")]
 layout_mode = 1
