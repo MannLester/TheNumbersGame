@@ -1,32 +1,121 @@
-[gd_scene format=3 uid="uid://b3noesaby2nth"]
+[gd_scene load_steps=7 format=3 uid="uid://b3noesaby2nth"]
+
+[ext_resource type="Script" path="res://scripts/game_area_scripts/pile_cards.gd" id="1_abc123"]
+[ext_resource type="PackedScene" uid="uid://cfn6r8ehvra2t" path="res://scenes/card_node.tscn" id="1_mmf2k"]
+[ext_resource type="FontFile" uid="uid://c2583ujg5wnpc" path="res://assets/fonts/poppins/Poppins-SemiBold.ttf" id="2_8sap2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lkvif"]
+bg_color = Color(1, 0.827451, 0, 0.509804)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fe6wn"]
+bg_color = Color(1, 0.827451, 0, 0.196078)
+corner_radius_top_left = 150
+corner_radius_top_right = 150
+corner_radius_bottom_right = 150
+corner_radius_bottom_left = 150
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ntkh"]
+bg_color = Color(1, 0.827451, 0, 0.117647)
+corner_radius_top_left = 200
+corner_radius_top_right = 200
+corner_radius_bottom_right = 200
+corner_radius_bottom_left = 200
 
 [node name="Control" type="Control"]
 layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+script = ExtResource("1_abc123")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -18.0
-offset_right = -20.0
-offset_bottom = -18.0
+offset_left = -101.0
+offset_top = -113.5
+offset_right = 101.0
+offset_bottom = 63.5
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 0
-
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lkvif")
 
 [node name="Panel2" type="Panel" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -136.0
+offset_top = -160.0
+offset_right = 136.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fe6wn")
 
 [node name="Panel3" type="Panel" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-metadata/_edit_use_anchors_ = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -188.0
+offset_top = -199.0
+offset_right = 188.0
+offset_bottom = 149.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3ntkh")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = -110.0
+offset_right = 75.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = -2
+
+[node name="Control" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(150, 220)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="CardNode" parent="VBoxContainer/Control" instance=ExtResource("1_mmf2k")]
+layout_mode = 1
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_8sap2")
+theme_override_font_sizes/font_size = 20
+text = "36 / 100"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("2_8sap2")
+theme_override_font_sizes/font_size = 20
+text = "number cards"
+horizontal_alignment = 1
+vertical_alignment = 1

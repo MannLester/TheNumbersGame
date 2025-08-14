@@ -1,11 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://bfhgpf371px5x"]
+[gd_scene load_steps=9 format=3 uid="uid://bfhgpf371px5x"]
 
+[ext_resource type="Script" path="res://scripts/game_area_scripts/game_area_page.gd" id="1_fj8br"]
 [ext_resource type="PackedScene" uid="uid://ju6dgq666lkl" path="res://scenes/game_area_page/game_area_header.tscn" id="1_uf3g4"]
 [ext_resource type="PackedScene" uid="uid://c3clv562yy1x0" path="res://scenes/game_area_page/player_hand.tscn" id="2_hars2"]
 [ext_resource type="PackedScene" uid="uid://dlw8wf0lfarf1" path="res://scenes/game_area_page/enemy_4_card.tscn" id="3_lu83m"]
 [ext_resource type="PackedScene" uid="uid://bnhftkn8vespa" path="res://scenes/game_area_page/enemy_2_card.tscn" id="4_eepyp"]
 [ext_resource type="PackedScene" uid="uid://dm6e22lpa54x3" path="res://scenes/game_area_page/enemy_3_hand.tscn" id="5_682x0"]
 [ext_resource type="PackedScene" uid="uid://b3noesaby2nth" path="res://scenes/game_area_page/pile_cards.tscn" id="6_5b4ek"]
+[ext_resource type="FontFile" uid="uid://bpm82y7rbu2cc" path="res://assets/fonts/poppins/Poppins-Bold.ttf" id="7_ehoes"]
 
 [node name="Game Area Page" type="Control"]
 layout_mode = 3
@@ -14,6 +16,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_fj8br")
 
 [node name="GameAreaBackground" type="ColorRect" parent="."]
 layout_mode = 1
@@ -25,6 +28,9 @@ grow_vertical = 2
 color = Color(0.117647, 0.160784, 0.231373, 1)
 
 [node name="Game Area Header" parent="." instance=ExtResource("1_uf3g4")]
+layout_mode = 1
+
+[node name="Pile Card" parent="." instance=ExtResource("6_5b4ek")]
 layout_mode = 1
 
 [node name="Player Hand" parent="." instance=ExtResource("2_hars2")]
@@ -41,5 +47,33 @@ layout_mode = 1
 offset_top = 3.63998
 offset_bottom = 103.64
 
-[node name="Control" parent="." instance=ExtResource("6_5b4ek")]
+[node name="Turn Identifier" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 1
+anchor_top = 0.158
+anchor_right = 0.997
+anchor_bottom = 0.159
+offset_top = -30.24
+offset_right = 2.15997
+offset_bottom = 28.48
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Turn Identifier"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Turn Identifier/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("7_ehoes")
+theme_override_font_sizes/font_size = 39
+text = "Player 3's Turn"
+horizontal_alignment = 1

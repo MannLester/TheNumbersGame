@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://c3clv562yy1x0"]
+[gd_scene load_steps=9 format=3 uid="uid://c3clv562yy1x0"]
 
+[ext_resource type="Script" path="res://scripts/game_area_scripts/player_hand.gd" id="1_4enmo"]
 [ext_resource type="FontFile" uid="uid://ew34ab1px4u7" path="res://assets/fonts/poppins/Poppins-Regular.ttf" id="1_relsf"]
 [ext_resource type="Texture2D" uid="uid://cn31ax1k18k3b" path="res://assets/buttons/Draw Button (2).png" id="1_rvoij"]
 [ext_resource type="Texture2D" uid="uid://cofwvo6ec8r62" path="res://assets/icons/Add  Icon (1).png" id="2_057kf"]
@@ -23,6 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
+script = ExtResource("1_4enmo")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://w2tn7iqfhscl"]
+[gd_scene load_steps=3 format=3 uid="uid://w2tn7iqfhscl"]
 
 [ext_resource type="Texture2D" uid="uid://b6uj31y6bsiwt" path="res://assets/cards/card_designs/ChatGPT Image Apr 4, 2025, 09_53_30 AM.png" id="1_g1tah"]
+[ext_resource type="Script" path="res://scripts/component_scripts/enemy_card.gd" id="1_pukdh"]
 
 [node name="EnemyCard" type="Control"]
 clip_contents = true
@@ -11,6 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_pukdh")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
