@@ -25,7 +25,7 @@ window/handheld/orientation=1
 
 [autoload]
 
-CardManager="*res://scripts/game_area_scripts/card_manager.gd"
+CardManager="*res://scripts/global_scripts/card_manager.gd"
 
 [dotnet]
 

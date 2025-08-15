@@ -15,7 +15,7 @@ corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 10
 
-[node name="Player Hand" type="Control"]
+[node name="Player Hand" type="Control" groups=["player_hand"]]
 custom_minimum_size = Vector2(0, 300)
 layout_mode = 3
 anchors_preset = 12

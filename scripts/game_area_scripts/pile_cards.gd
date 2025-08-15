@@ -1,12 +1,150 @@
 extends Control
 
+# Track cards in the pile
+var piled_cards: Array[String] = []
+var card_stack_count: int = 0
+
 func _ready() -> void:
 	# Make pile cards responsive while maintaining design
 	setup_responsive_layout()
 
+func add_card_to_pile(card_id: String):
+	print("=== ADDING CARD TO PILE ===")
+	print("Card ID: ", card_id)
+	
+	# Add a card to the pile with stacking effect
+	piled_cards.append(card_id)
+	card_stack_count += 1
+	
+	# Safety check for CardManager
+	if not CardManager:
+		print("Error: CardManager not found!")
+		return
+	
+	# Create new card instance for the pile
+	var card_scene = preload("res://scenes/card_node.tscn")
+	var card_instance = card_scene.instantiate()
+	
+	# Setup the card with its ID and texture
+	var texture_path = CardManager.get_card_texture_path(card_id)
+	card_instance.setup_card(card_id, texture_path)
+	
+	# MAKE THE CARD IMMOVABLE using the dedicated method
+	if card_instance.has_method("mark_as_pile_card"):
+		card_instance.mark_as_pile_card()
+	else:
+		# Fallback method if mark_as_pile_card doesn't exist
+		card_instance.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		card_instance.set_process_input(false)
+		card_instance.set_process_unhandled_input(false)
+	
+	# Disconnect any existing drag signals to prevent dragging
+	if card_instance.has_signal("drag_started"):
+		# Disconnect all connections for drag signals
+		for connection in card_instance.drag_started.get_connections():
+			card_instance.drag_started.disconnect(connection.callable)
+		for connection in card_instance.drag_ended.get_connections():
+			card_instance.drag_ended.disconnect(connection.callable)
+	
+	# Add to the card container
+	var card_container = $VBoxContainer/Control
+	if card_container:
+		card_container.add_child(card_instance)
+		
+		# Position the card at the center of the container
+		# The container is 150x220, so center is at 75x110
+		var container_center = Vector2(75, 110)  # Half of 150x220
+		card_instance.position = container_center - Vector2(50, 70)  # Offset by half card size (100x140)
+		
+		# Apply stacking effects AFTER positioning
+		apply_stacking_effects(card_instance, card_stack_count)
+		
+		print("SUCCESS: Added immovable card ", card_id, " to pile center.")
+		print("Card positioned at: ", card_instance.position)
+		print("Total cards in pile: ", piled_cards.size())
+		print("Stack position: ", card_stack_count)
+		print("Card is now immovable and cannot be dragged.")
+		
+		# Update pile counter display
+		update_pile_counter()
+	else:
+		print("ERROR: Could not find card container in pile!")
+
+func apply_stacking_effects(card_instance: Control, stack_position: int):
+	# Apply random rotation (±15 degrees for more variety)
+	var random_rotation = randf_range(-15.0, 15.0)
+	card_instance.rotation_degrees = random_rotation
+	
+	# Apply small random offset for stacking effect (from the centered position)
+	var random_offset_x = randf_range(-8.0, 8.0)
+	var random_offset_y = randf_range(-5.0, 5.0)
+	
+	# Add the offset to the current centered position
+	card_instance.position += Vector2(random_offset_x, random_offset_y)
+	
+	# Set z-index so newer cards appear on top
+	card_instance.z_index = stack_position
+	
+	# Add a slight scale variation for more realistic stacking
+	var scale_variation = randf_range(0.95, 1.05)
+	card_instance.scale = Vector2(scale_variation, scale_variation)
+	
+	print("Applied stacking effects:")
+	print("  - Position: ", stack_position)
+	print("  - Final position: ", card_instance.position)
+	print("  - Rotation: ", random_rotation, "°")
+	print("  - Offset: ", Vector2(random_offset_x, random_offset_y))
+	print("  - Scale: ", scale_variation)
+	print("  - Z-index: ", stack_position)
+
+func update_pile_counter():
+	# Update the pile counter display
+	var counter_label = $VBoxContainer/Label
+	if counter_label:
+		if CardManager:
+			var deck_status = CardManager.get_deck_status()
+			var total_cards = deck_status["available_cards"] + deck_status["used_cards"]
+			counter_label.text = str(piled_cards.size()) + " / " + str(total_cards)
+		else:
+			counter_label.text = str(piled_cards.size()) + " / ?"
+
+func is_drop_zone_for_position(global_pos: Vector2) -> bool:
+	# Check if the given global position is within Panel3 (outermost circle) bounds
+	var panel3 = $Panel3
+	if panel3:
+		var panel3_rect = panel3.get_global_rect()
+		var panel3_center = panel3_rect.get_center()
+		
+		# Calculate radius from the panel size (it's circular, so use smaller dimension)
+		var radius = min(panel3_rect.size.x, panel3_rect.size.y) / 2.0
+		
+		# Check if the position is within the circular area
+		var distance_from_center = global_pos.distance_to(panel3_center)
+		var is_in_zone = distance_from_center <= radius
+		
+		print("=== DROP ZONE DETECTION ===")
+		print("Position: ", global_pos)
+		print("Panel3 center: ", panel3_center)
+		print("Panel3 rect: ", panel3_rect)
+		print("Panel3 radius: ", radius)
+		print("Distance from center: ", distance_from_center)
+		print("In pile zone: ", is_in_zone)
+		print("========================")
+		return is_in_zone
+	else:
+		print("ERROR: Panel3 not found in pile cards!")
+		return false
+
+func get_pile_card_count() -> int:
+	return piled_cards.size()
+
 func setup_responsive_layout():
 	var screen_size = get_viewport().get_visible_rect().size
 	var scale_factor = min(screen_size.x / 720.0, screen_size.y / 1280.0)
+	
+	# Since we're now using center anchoring instead of full rect,
+	# we need to scale the overall container size
+	scale_container_size(scale_factor)
 	
 	# Scale the layered circular backgrounds
 	scale_background_circles(scale_factor)
@@ -16,6 +154,18 @@ func setup_responsive_layout():
 	
 	# Scale text elements (counter and description)
 	scale_text_elements(scale_factor)
+
+func scale_container_size(scale_factor: float):
+	# Scale the main container size since we're using center anchoring
+	var base_size = 400.0  # Our offset range is -200 to +200 = 400px
+	var new_size = max(300.0, base_size * scale_factor)  # Minimum 300px
+	var half_size = new_size / 2.0
+	
+	# Update the container offsets
+	offset_left = -half_size
+	offset_right = half_size
+	offset_top = -half_size
+	offset_bottom = half_size
 
 func scale_background_circles(scale_factor: float):
 	# Scale the 3 layered yellow circles while maintaining the layered effect

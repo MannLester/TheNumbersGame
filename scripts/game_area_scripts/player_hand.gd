@@ -1,12 +1,17 @@
 extends Control
 
 var dragging_card = null
-var player_cards: Array[int] = []  # Track player's card numbers
+var player_cards: Array[String] = []  # Track player's card IDs
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Wait for CardManager to be ready
 	await get_tree().process_frame
+	
+	# Safety check for CardManager
+	if not CardManager:
+		print("Error: CardManager autoload not found! Check project settings.")
+		return
 	
 	# Connect draw button signal
 	var draw_button = $MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/TextureButton
@@ -16,21 +21,31 @@ func _ready() -> void:
 	# Setup initial 10 random cards
 	setup_initial_cards()
 	
-	# Setup card drag signals
+	# Setup card drag signals AFTER cards are created
 	setup_card_dragging()
 	
 	# Make player hand responsive while maintaining design
 	setup_responsive_layout()
 
 func setup_card_dragging():
+	print("=== SETTING UP CARD DRAGGING ===")
 	# Connect drag signals for all existing cards
 	var cards_container = $MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer
 	if cards_container:
+		print("Cards container found with ", cards_container.get_child_count(), " children")
 		for child in cards_container.get_children():
+			print("Checking child: ", child.name, " (", child.get_class(), ")")
 			if child.has_signal("drag_started"):
+				print("Connecting drag signals for: ", child.name)
 				child.drag_started.connect(_on_card_drag_started)
 				child.drag_ended.connect(_on_card_drag_ended)
-				print("Connected drag signals for: ", child.name)
+				print("Successfully connected drag signals for: ", child.name)
+			else:
+				print("WARNING: Child ", child.name, " does not have drag_started signal")
+	else:
+		print("ERROR: Cards container not found!")
+	print("=== CARD DRAGGING SETUP COMPLETE ===")
+	print("")
 
 func setup_initial_cards():
 	# Remove existing placeholder cards
@@ -47,7 +62,7 @@ func setup_initial_cards():
 		player_cards = CardManager.draw_cards(10)
 		
 		# Create CardNode instances for each drawn card
-		for card_number in player_cards:
+		for card_id in player_cards:
 			var card_scene = preload("res://scenes/card_node.tscn")
 			var card_instance = card_scene.instantiate()
 			
@@ -57,9 +72,17 @@ func setup_initial_cards():
 			# Wait for the node to be ready
 			await get_tree().process_frame
 			
-			# Setup the card with its number and texture
-			var texture_path = CardManager.get_card_texture_path(card_number)
-			card_instance.setup_card(card_number, texture_path)
+			# Setup the card with its ID and texture
+			var texture_path = CardManager.get_card_texture_path(card_id)
+			card_instance.setup_card(card_id, texture_path)
+			
+			# Connect drag signals immediately after card setup
+			if card_instance.has_signal("drag_started"):
+				card_instance.drag_started.connect(_on_card_drag_started)
+				card_instance.drag_ended.connect(_on_card_drag_ended)
+				print("Connected drag signals for card: ", card_id)
+			else:
+				print("WARNING: Card ", card_id, " does not have drag signals!")
 		
 		# Update card counter after all cards are added
 		update_card_counter()
@@ -83,33 +106,119 @@ func get_current_card_count() -> int:
 
 func _on_card_drag_started(card: Control):
 	dragging_card = card
-	print("Player hand detected card drag started: ", card.name)
+	print("=== CARD DRAG STARTED ===")
+	print("Card: ", card.name)
+	print("Card ID: ", card.get_card_id() if card.has_method("get_card_id") else "unknown")
+	print("Card position: ", card.global_position)
+	print("=========================")
 
 func _on_card_drag_ended(card: Control):
 	if dragging_card == card:
-		print("Player hand detected card drag ended: ", card.name)
+		print("=== CARD DRAG ENDED ===")
+		print("Card: ", card.name)
+		print("Card global position: ", card.global_position)
 		
 		# Check if dropped on valid target
 		var drop_target = get_drop_target()
 		
 		if drop_target:
+			print("SUCCESS: Valid drop target found - moving card to pile")
 			handle_successful_drop(card, drop_target)
 		else:
+			print("FAIL: No valid drop target - returning card to hand")
 			# Return to original position
 			card.return_to_original_position()
 		
 		dragging_card = null
 		# Update counter after any card movement
 		update_card_counter()
+		print("=== DRAG END COMPLETE ===")
+		print("")
 
 func get_drop_target():
-	# For testing, let's always return null so cards return to hand
-	# You can implement drop zone detection here later
-	print("Checking for drop targets...")
+	print("=== CHECKING DROP TARGET ===")
+	# Check if dropped on the pile cards area
+	if dragging_card:
+		print("Dragging card exists: ", dragging_card.name)
+		print("Dragging card position: ", dragging_card.global_position)
+		
+		# Try multiple ways to find the pile cards
+		var pile_cards = null
+		
+		# Method 1: Try group first
+		pile_cards = get_tree().get_first_node_in_group("pile_cards")
+		print("Method 1 (group): ", pile_cards.name if pile_cards else "not found")
+		
+		# Method 2: Try finding by parent relationship
+		if not pile_cards:
+			var parent = get_parent()  # Get parent of player hand
+			print("Player hand parent: ", parent.name if parent else "not found")
+			if parent:
+				pile_cards = parent.get_node_or_null("Pile Card")
+				print("Method 2 (parent relationship): ", pile_cards.name if pile_cards else "not found")
+		
+		# Method 3: Try finding by scene tree search
+		if not pile_cards:
+			var scene_root = get_tree().current_scene
+			print("Scene root: ", scene_root.name if scene_root else "not found")
+			pile_cards = scene_root.get_node_or_null("Pile Card")
+			print("Method 3 (scene tree): ", pile_cards.name if pile_cards else "not found")
+		
+		# Check if we found pile cards and can drop
+		if pile_cards and pile_cards.has_method("is_drop_zone_for_position"):
+			var card_global_pos = dragging_card.global_position + dragging_card.size / 2  # Center of card
+			print("Checking drop zone - Card center position: ", card_global_pos)
+			if pile_cards.is_drop_zone_for_position(card_global_pos):
+				print("SUCCESS: Card dropped on Panel3 pile area!")
+				return pile_cards
+			else:
+				print("FAIL: Card not in Panel3 drop zone - returning to hand")
+		else:
+			print("ERROR: Pile cards not found or missing method")
+			if pile_cards:
+				print("Pile cards methods: ", pile_cards.get_method_list())
+	else:
+		print("ERROR: No dragging card found")
+	
+	print("=== DROP TARGET CHECK COMPLETE ===")
+	print("")
 	return null
 
 func handle_successful_drop(card: Control, target):
-	print("Card ", card.name, " successfully dropped on: ", target.name if target else "unknown")
+	print("=== HANDLING SUCCESSFUL DROP ===")
+	print("Card: ", card)
+	print("Target: ", target)
+	
+	# If dropped on pile cards, add card to pile and remove from hand
+	if target.has_method("add_card_to_pile") and card.has_method("get_card_id"):
+		var card_id = card.get_card_id()
+		print("Moving card ", card_id, " from hand to pile")
+		
+		# Add card to pile (this will create a new stacked card instance)
+		target.add_card_to_pile(card_id)
+		
+		# Remove card from player's hand tracking
+		if card_id in player_cards:
+			player_cards.erase(card_id)
+			print("Removed card ", card_id, " from player_cards array")
+		
+		# Remove the dragged card from the hand UI
+		card.queue_free()
+		print("Removed dragged card from hand UI")
+		
+		# Update hand counter
+		update_card_counter()
+		
+		print("SUCCESS: Card ", card_id, " moved from hand to pile!")
+		print("Remaining cards in hand: ", player_cards.size())
+	else:
+		print("ERROR: Could not move card to pile - missing methods or data")
+		print("Target has add_card_to_pile: ", target.has_method("add_card_to_pile") if target else false)
+		print("Card has get_card_id: ", card.has_method("get_card_id") if card else false)
+		# Fallback: return card to hand
+		card.return_to_original_position()
+	print("=== DROP HANDLING COMPLETE ===")
+	print("")
 
 func setup_responsive_layout():
 	var screen_size = get_viewport().get_visible_rect().size
@@ -251,16 +360,16 @@ func _on_draw_button_pressed():
 	# Draw one new card from the deck
 	var drawn_cards = CardManager.draw_cards(1)
 	if drawn_cards.size() > 0:
-		var card_number = drawn_cards[0]
-		player_cards.append(card_number)
+		var card_id = drawn_cards[0]
+		player_cards.append(card_id)
 		
 		# Create new CardNode instance
 		var card_scene = preload("res://scenes/card_node.tscn")
 		var card_instance = card_scene.instantiate()
 		
-		# Setup the card with its number and texture
-		var texture_path = CardManager.get_card_texture_path(card_number)
-		card_instance.setup_card(card_number, texture_path)
+		# Setup the card with its ID and texture
+		var texture_path = CardManager.get_card_texture_path(card_id)
+		card_instance.setup_card(card_id, texture_path)
 		
 		# Add to container
 		var cards_container = $MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer
@@ -275,7 +384,7 @@ func _on_draw_button_pressed():
 		# Update counter
 		update_card_counter()
 		
-		print("Added card ", card_number, " to hand. Total cards: ", player_cards.size())
+		print("Added card ", card_id, " to hand. Total cards: ", player_cards.size())
 	else:
 		print("No more cards available in deck!")
 
