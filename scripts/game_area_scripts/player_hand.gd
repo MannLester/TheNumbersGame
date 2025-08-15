@@ -1,14 +1,115 @@
 extends Control
 
+var dragging_card = null
+var player_cards: Array[int] = []  # Track player's card numbers
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# Wait for CardManager to be ready
+	await get_tree().process_frame
+	
 	# Connect draw button signal
 	var draw_button = $MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/TextureButton
 	if draw_button:
 		draw_button.pressed.connect(_on_draw_button_pressed)
 	
+	# Setup initial 10 random cards
+	setup_initial_cards()
+	
+	# Setup card drag signals
+	setup_card_dragging()
+	
 	# Make player hand responsive while maintaining design
 	setup_responsive_layout()
+
+func setup_card_dragging():
+	# Connect drag signals for all existing cards
+	var cards_container = $MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer
+	if cards_container:
+		for child in cards_container.get_children():
+			if child.has_signal("drag_started"):
+				child.drag_started.connect(_on_card_drag_started)
+				child.drag_ended.connect(_on_card_drag_ended)
+				print("Connected drag signals for: ", child.name)
+
+func setup_initial_cards():
+	# Remove existing placeholder cards
+	var cards_container = $MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer
+	if cards_container:
+		# Remove all existing children
+		for child in cards_container.get_children():
+			child.queue_free()
+		
+		# Wait for children to be freed
+		await get_tree().process_frame
+		
+		# Draw 10 random cards from CardManager
+		player_cards = CardManager.draw_cards(10)
+		
+		# Create CardNode instances for each drawn card
+		for card_number in player_cards:
+			var card_scene = preload("res://scenes/card_node.tscn")
+			var card_instance = card_scene.instantiate()
+			
+			# Add to container first
+			cards_container.add_child(card_instance)
+			
+			# Wait for the node to be ready
+			await get_tree().process_frame
+			
+			# Setup the card with its number and texture
+			var texture_path = CardManager.get_card_texture_path(card_number)
+			card_instance.setup_card(card_number, texture_path)
+		
+		# Update card counter after all cards are added
+		update_card_counter()
+		
+		print("Setup ", player_cards.size(), " initial cards: ", player_cards)
+
+func update_card_counter():
+	# Update the card counter label to show actual number of cards
+	var counter_label = $MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control2/TextureRect/Label
+	if counter_label:
+		var card_count = get_current_card_count()
+		counter_label.text = str(card_count)
+		print("Updated card counter to: ", card_count)
+
+func get_current_card_count() -> int:
+	# Count actual cards in the container
+	var cards_container = $MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer
+	if cards_container:
+		return cards_container.get_child_count()
+	return 0
+
+func _on_card_drag_started(card: Control):
+	dragging_card = card
+	print("Player hand detected card drag started: ", card.name)
+
+func _on_card_drag_ended(card: Control):
+	if dragging_card == card:
+		print("Player hand detected card drag ended: ", card.name)
+		
+		# Check if dropped on valid target
+		var drop_target = get_drop_target()
+		
+		if drop_target:
+			handle_successful_drop(card, drop_target)
+		else:
+			# Return to original position
+			card.return_to_original_position()
+		
+		dragging_card = null
+		# Update counter after any card movement
+		update_card_counter()
+
+func get_drop_target():
+	# For testing, let's always return null so cards return to hand
+	# You can implement drop zone detection here later
+	print("Checking for drop targets...")
+	return null
+
+func handle_successful_drop(card: Control, target):
+	print("Card ", card.name, " successfully dropped on: ", target.name if target else "unknown")
 
 func setup_responsive_layout():
 	var screen_size = get_viewport().get_visible_rect().size
@@ -146,12 +247,37 @@ func scale_spacing(scale_factor: float):
 
 func _on_draw_button_pressed():
 	print("Draw button pressed")
-	# TODO: Implement card drawing logic
-	# This could involve:
-	# - Drawing a card from the pile
-	# - Adding it to the player's hand
-	# - Updating the card counter
-	# - Triggering any draw animations
+	
+	# Draw one new card from the deck
+	var drawn_cards = CardManager.draw_cards(1)
+	if drawn_cards.size() > 0:
+		var card_number = drawn_cards[0]
+		player_cards.append(card_number)
+		
+		# Create new CardNode instance
+		var card_scene = preload("res://scenes/card_node.tscn")
+		var card_instance = card_scene.instantiate()
+		
+		# Setup the card with its number and texture
+		var texture_path = CardManager.get_card_texture_path(card_number)
+		card_instance.setup_card(card_number, texture_path)
+		
+		# Add to container
+		var cards_container = $MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer
+		if cards_container:
+			cards_container.add_child(card_instance)
+		
+		# Connect drag signals for the new card
+		if card_instance.has_signal("drag_started"):
+			card_instance.drag_started.connect(_on_card_drag_started)
+			card_instance.drag_ended.connect(_on_card_drag_ended)
+		
+		# Update counter
+		update_card_counter()
+		
+		print("Added card ", card_number, " to hand. Total cards: ", player_cards.size())
+	else:
+		print("No more cards available in deck!")
 
 # Handle screen size changes in real-time
 func _notification(what):

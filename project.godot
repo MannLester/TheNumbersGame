@@ -23,6 +23,10 @@ window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
 
+[autoload]
+
+CardManager="*res://scripts/game_area_scripts/card_manager.gd"
+
 [dotnet]
 
 project/assembly_name="TheNumbersGame"
@@ -30,3 +34,4 @@ project/assembly_name="TheNumbersGame"
 [rendering]
 
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
