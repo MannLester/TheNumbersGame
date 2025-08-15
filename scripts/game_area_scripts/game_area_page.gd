@@ -4,6 +4,9 @@ extends Control
 func _ready() -> void:
 	# Make the main game area responsive while maintaining layout
 	setup_responsive_layout()
+	
+	#Start the timer from Game Header Scene
+	$"Game Area Header".timer_start()
 
 func setup_responsive_layout():
 	var screen_size = get_viewport().get_visible_rect().size

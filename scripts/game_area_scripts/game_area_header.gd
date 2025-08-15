@@ -1,5 +1,8 @@
 extends Control
 
+
+var time_left = 30
+
 func _ready() -> void:
 	# Connect button signals
 	var exit_button = $MarginHeader/HeaderContainer/ExitButton
@@ -12,6 +15,22 @@ func _ready() -> void:
 	
 	# Make header responsive while maintaining design
 	setup_responsive_layout()
+
+func timer_start():
+	#For Timer Purposes
+	var timer = $HeaderTimer
+	var timer_label = $MarginHeader/HeaderContainer/TimerContainer/TimerControl/TimerLabel
+	
+	timer_label.text = str(time_left)
+	timer.wait_time = 1.0
+	timer.start()
+
+func _on_header_timer_timeout() -> void:
+	time_left -= 1
+	$MarginHeader/HeaderContainer/TimerContainer/TimerControl/TimerLabel.text = str(time_left)
+	if time_left <= 0:
+		$HeaderTimer.stop()
+		$MarginHeader/HeaderContainer/TimerContainer/TimerControl/TimerLabel.text = "Time's up!"
 
 func setup_responsive_layout():
 	var screen_size = get_viewport().get_visible_rect().size

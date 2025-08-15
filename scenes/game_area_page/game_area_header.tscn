@@ -15,7 +15,7 @@ anchor_right = 1.0
 grow_horizontal = 2
 script = ExtResource("1_dmu2b")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="HeaderTimer" type="Timer" parent="."]
 
 [node name="HeaderBackground" type="TextureRect" parent="."]
 layout_mode = 1
@@ -94,3 +94,5 @@ layout_mode = 2
 [node name="InfoButton" type="TextureButton" parent="MarginHeader/HeaderContainer"]
 layout_mode = 2
 texture_normal = ExtResource("6_qb0vw")
+
+[connection signal="timeout" from="HeaderTimer" to="." method="_on_header_timer_timeout"]
