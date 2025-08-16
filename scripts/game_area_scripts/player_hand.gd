@@ -90,19 +90,31 @@ func setup_initial_cards():
 		print("Setup ", player_cards.size(), " initial cards: ", player_cards)
 
 func update_card_counter():
-	# Update the card counter label to show actual number of cards
+	# Always count actual cards in the container for accuracy
 	var counter_label = $MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control2/TextureRect/Label
 	if counter_label:
-		var card_count = get_current_card_count()
-		counter_label.text = str(card_count)
-		print("Updated card counter to: ", card_count)
+		var actual_card_count = count_actual_cards_in_hand()
+		counter_label.text = str(actual_card_count)
+		print("=== PLAYER HAND COUNTER UPDATED ===")
+		print("Actual cards in hand container: ", actual_card_count)
+		print("Display text: ", counter_label.text)
+		print("=====================================")
 
-func get_current_card_count() -> int:
-	# Count actual cards in the container
+func count_actual_cards_in_hand() -> int:
+	# Count actual card nodes in the hand container
 	var cards_container = $MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer
 	if cards_container:
-		return cards_container.get_child_count()
+		var card_count = 0
+		for child in cards_container.get_children():
+			# Only count children that are actually card nodes
+			if child.has_method("get_card_id"):
+				card_count += 1
+		return card_count
 	return 0
+
+func get_current_card_count() -> int:
+	# Use the new accurate counting method
+	return count_actual_cards_in_hand()
 
 func _on_card_drag_started(card: Control):
 	dragging_card = card
@@ -395,4 +407,6 @@ func _notification(what):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	pass
+	# Update counter every few frames to ensure accuracy
+	if Engine.get_process_frames() % 30 == 0:  # Update every 30 frames (about every 0.5 seconds)
+		update_card_counter()

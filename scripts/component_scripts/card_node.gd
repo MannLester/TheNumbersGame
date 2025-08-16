@@ -167,6 +167,11 @@ func return_to_original_position():
 			z_index = 0
 			
 			print("Card ", card_id, " successfully returned to player hand")
+			
+			# Update the player hand counter
+			if player_hand.has_method("update_card_counter"):
+				player_hand.update_card_counter()
+				print("Updated player hand counter after card return")
 		else:
 			print("ERROR: Could not find cards container in player hand!")
 			use_fallback_return()

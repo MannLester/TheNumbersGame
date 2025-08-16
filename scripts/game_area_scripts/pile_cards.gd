@@ -2,6 +2,7 @@ extends Control
 
 # Track cards in the pile
 var piled_cards: Array[String] = []
+var piled_number_cards: Array[String] = []  # Track only number cards
 var card_stack_count: int = 0
 
 func _ready() -> void:
@@ -12,9 +13,18 @@ func add_card_to_pile(card_id: String):
 	print("=== ADDING CARD TO PILE ===")
 	print("Card ID: ", card_id)
 	
-	# Add a card to the pile with stacking effect
+	# Add card to general pile tracking
 	piled_cards.append(card_id)
 	card_stack_count += 1
+	
+	# Check if it's a number card and add to number cards tracking
+	if CardManager:
+		var card_type = CardManager.get_card_type(card_id)
+		if card_type == CardManager.CardType.NUMBER:
+			piled_number_cards.append(card_id)
+			print("Added NUMBER card to pile: ", card_id)
+		else:
+			print("Added OPERATOR card to pile: ", card_id)
 	
 	# Safety check for CardManager
 	if not CardManager:
@@ -61,7 +71,9 @@ func add_card_to_pile(card_id: String):
 		
 		print("SUCCESS: Added immovable card ", card_id, " to pile center.")
 		print("Card positioned at: ", card_instance.position)
-		print("Total cards in pile: ", piled_cards.size())
+		print("Total cards in pile: ", count_actual_total_cards_in_pile())
+		print("Number cards in pile: ", count_actual_number_cards_in_pile())
+		print("Operator cards in pile: ", get_pile_operator_card_count())
 		print("Stack position: ", card_stack_count)
 		print("Card is now immovable and cannot be dragged.")
 		
@@ -98,15 +110,57 @@ func apply_stacking_effects(card_instance: Control, stack_position: int):
 	print("  - Z-index: ", stack_position)
 
 func update_pile_counter():
-	# Update the pile counter display
+	# Always count actual number cards in the pile for accuracy
 	var counter_label = $VBoxContainer/Label
 	if counter_label:
+		var actual_number_cards = count_actual_number_cards_in_pile()
+		
 		if CardManager:
+			# Get total number cards available in the deck
 			var deck_status = CardManager.get_deck_status()
-			var total_cards = deck_status["available_cards"] + deck_status["used_cards"]
-			counter_label.text = str(piled_cards.size()) + " / " + str(total_cards)
+			var total_number_cards = deck_status.get("total_number_cards", 100)  # Default to 100 if not available
+			
+			# If CardManager doesn't provide total_number_cards, calculate from available cards 1-100
+			if total_number_cards == 100 and deck_status.has("available_cards"):
+				# Assume cards 1-100 are number cards if no specific info available
+				total_number_cards = 100
+			
+			# Show count of actual number cards in pile vs total number cards
+			counter_label.text = str(actual_number_cards) + " / " + str(total_number_cards)
+			print("=== PILE COUNTER UPDATED ===")
+			print("Actual number cards in pile: ", actual_number_cards)
+			print("Total number cards available: ", total_number_cards)
+			print("Display text: ", counter_label.text)
+			print("===========================")
 		else:
-			counter_label.text = str(piled_cards.size()) + " / ?"
+			counter_label.text = str(actual_number_cards) + " / ?"
+
+func count_actual_number_cards_in_pile() -> int:
+	# Count actual number card nodes in the pile container
+	var card_container = $VBoxContainer/Control
+	if card_container:
+		var number_card_count = 0
+		for child in card_container.get_children():
+			# Only count children that are card nodes with number card IDs
+			if child.has_method("get_card_id") and CardManager:
+				var card_id = child.get_card_id()
+				var card_type = CardManager.get_card_type(card_id)
+				if card_type == CardManager.CardType.NUMBER:
+					number_card_count += 1
+		return number_card_count
+	return 0
+
+func count_actual_total_cards_in_pile() -> int:
+	# Count all actual card nodes in the pile container
+	var card_container = $VBoxContainer/Control
+	if card_container:
+		var total_card_count = 0
+		for child in card_container.get_children():
+			# Only count children that are card nodes
+			if child.has_method("get_card_id"):
+				total_card_count += 1
+		return total_card_count
+	return 0
 
 func is_drop_zone_for_position(global_pos: Vector2) -> bool:
 	# Check if the given global position is within Panel3 (outermost circle) bounds
@@ -136,7 +190,13 @@ func is_drop_zone_for_position(global_pos: Vector2) -> bool:
 		return false
 
 func get_pile_card_count() -> int:
-	return piled_cards.size()
+	return count_actual_total_cards_in_pile()
+
+func get_pile_number_card_count() -> int:
+	return count_actual_number_cards_in_pile()
+
+func get_pile_operator_card_count() -> int:
+	return count_actual_total_cards_in_pile() - count_actual_number_cards_in_pile()
 
 func setup_responsive_layout():
 	var screen_size = get_viewport().get_visible_rect().size
@@ -256,4 +316,6 @@ func _notification(what):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	pass
+	# Update counter every few frames to ensure accuracy
+	if Engine.get_process_frames() % 30 == 0:  # Update every 30 frames (about every 0.5 seconds)
+		update_pile_counter()
