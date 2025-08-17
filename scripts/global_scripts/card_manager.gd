@@ -143,6 +143,18 @@ func get_deck_status() -> Dictionary:
 		"total_cards": available_cards.size() + used_cards.size()
 	}
 
+func draw_starting_pile_card() -> String:
+	# Draw one random card to start the pile (like UNO)
+	if available_cards.size() > 0:
+		var card_id = available_cards.pop_front()
+		used_cards.append(card_id)
+		print("Drew starting pile card: ", card_id)
+		print("Remaining cards in deck: ", available_cards.size())
+		return card_id
+	else:
+		print("Warning: No cards available for starting pile!")
+		return ""
+
 func reset_deck():
 	# Reset the entire deck (useful for new games)
 	initialize_deck()

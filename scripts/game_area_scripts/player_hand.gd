@@ -24,6 +24,9 @@ func _ready() -> void:
 	# Setup card drag signals AFTER cards are created
 	setup_card_dragging()
 	
+	# Initialize pile with starting card AFTER player cards are dealt
+	initialize_starting_pile()
+	
 	# Make player hand responsive while maintaining design
 	setup_responsive_layout()
 
@@ -45,6 +48,20 @@ func setup_card_dragging():
 	else:
 		print("ERROR: Cards container not found!")
 	print("=== CARD DRAGGING SETUP COMPLETE ===")
+	print("")
+
+func initialize_starting_pile():
+	print("=== INITIALIZING STARTING PILE ===")
+	# Find the pile cards to initialize it with a starting card
+	var pile_cards = get_tree().get_first_node_in_group("pile_cards")
+	if pile_cards and pile_cards.has_method("initialize_pile_with_starting_card"):
+		# Wait a frame to ensure everything is ready
+		await get_tree().process_frame
+		pile_cards.initialize_pile_with_starting_card()
+		print("Starting pile initialization requested")
+	else:
+		print("ERROR: Could not find pile cards or initialization method")
+	print("=== STARTING PILE INITIALIZATION COMPLETE ===")
 	print("")
 
 func setup_initial_cards():

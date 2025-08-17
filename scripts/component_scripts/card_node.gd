@@ -20,6 +20,9 @@ var dragging := false
 var drag_offset := Vector2.ZERO
 var original_parent = null
 var original_position := Vector2.ZERO
+var original_index := -1  # Track original position in parent container
+var original_sibling_before = null  # Track the card that was before this one
+var original_sibling_after = null   # Track the card that was after this one
 var is_in_pile := false  # Track if card is in pile and should be immovable
 
 # Signals for the player hand to listen to
@@ -74,9 +77,28 @@ func start_drag(mouse_pos: Vector2):
 	original_parent = get_parent()
 	original_position = position
 	
+	# Store the original index position in the parent container
+	if original_parent:
+		original_index = get_index()
+		
+		# Store sibling references for more reliable positioning
+		var current_index = get_index()
+		if current_index > 0:
+			original_sibling_before = original_parent.get_child(current_index - 1)
+		else:
+			original_sibling_before = null
+			
+		if current_index < original_parent.get_child_count() - 1:
+			original_sibling_after = original_parent.get_child(current_index + 1)
+		else:
+			original_sibling_after = null
+	
 	print("Starting drag - Immediate parent: ", original_parent.name if original_parent else "none")
 	print("Starting drag - Parent path: ", original_parent.get_path() if original_parent else "none")
 	print("Starting drag - Original position: ", original_position)
+	print("Starting drag - Original index: ", original_index)
+	print("Starting drag - Sibling before: ", original_sibling_before.get_card_id() if original_sibling_before and original_sibling_before.has_method("get_card_id") else "none")
+	print("Starting drag - Sibling after: ", original_sibling_after.get_card_id() if original_sibling_after and original_sibling_after.has_method("get_card_id") else "none")
 	
 	# Move to top level for proper rendering
 	reparent(get_tree().current_scene)
@@ -147,6 +169,8 @@ func return_to_original_position():
 		var cards_container = player_hand.get_node_or_null("MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer")
 		if cards_container:
 			print("Cards container found: ", cards_container.get_path())
+			print("Current children count: ", cards_container.get_child_count())
+			print("Original index to restore: ", original_index)
 		else:
 			print("Cards container not found")
 		
@@ -157,8 +181,64 @@ func return_to_original_position():
 			if get_parent():
 				get_parent().remove_child(self)
 			
-			# Add to cards container
+			# Add to cards container at the original index position
 			cards_container.add_child(self)
+			print("=== CARD POSITIONING DEBUG ===")
+			print("Added card as child, container now has: ", cards_container.get_child_count(), " children")
+			print("Card is currently at index: ", get_index())
+			print("Original index was: ", original_index)
+			print("Sibling before valid: ", original_sibling_before != null and is_instance_valid(original_sibling_before))
+			print("Sibling after valid: ", original_sibling_after != null and is_instance_valid(original_sibling_after))
+			
+			# List current children for debugging
+			print("Current children in container:")
+			for i in range(cards_container.get_child_count()):
+				var child = cards_container.get_child(i)
+				if child.has_method("get_card_id"):
+					print("  Index ", i, ": ", child.get_card_id())
+				else:
+					print("  Index ", i, ": ", child.name)
+			
+			# Try to restore to original index
+			var target_index = -1
+			
+			# Method 1: Use original index if valid
+			if original_index >= 0 and original_index < cards_container.get_child_count():
+				target_index = original_index
+				print("Method 1: Using original index ", target_index)
+			else:
+				print("Method 1: Original index ", original_index, " is invalid (0 to ", cards_container.get_child_count()-1, ")")
+				
+				# Method 2: Try to position relative to siblings
+				if original_sibling_before and is_instance_valid(original_sibling_before):
+					# Find the sibling in the current container
+					for i in range(cards_container.get_child_count()):
+						if cards_container.get_child(i) == original_sibling_before:
+							target_index = i + 1
+							print("Method 2: Found sibling before at index ", i, ", positioning after at ", target_index)
+							break
+					if target_index == -1:
+						print("Method 2: Sibling before not found in container")
+				
+				# Method 3: Try sibling after
+				if target_index == -1 and original_sibling_after and is_instance_valid(original_sibling_after):
+					for i in range(cards_container.get_child_count()):
+						if cards_container.get_child(i) == original_sibling_after:
+							target_index = i
+							print("Method 3: Found sibling after at index ", i, ", positioning before at ", target_index)
+							break
+					if target_index == -1:
+						print("Method 3: Sibling after not found in container")
+			
+			# Move to target index if valid
+			if target_index >= 0 and target_index < cards_container.get_child_count():
+				print("Moving card from index ", get_index(), " to target index: ", target_index)
+				cards_container.move_child(self, target_index)
+				print("Card successfully moved to index: ", get_index())
+			else:
+				print("No valid target index found (", target_index, "), card stays at end (index ", get_index(), ")")
+			
+			print("=== END POSITIONING DEBUG ===")
 			
 			# Reset transform properties
 			position = Vector2.ZERO
@@ -191,8 +271,15 @@ func use_fallback_return():
 		if get_parent():
 			get_parent().remove_child(self)
 		
-		# Return to original parent
-		original_parent.add_child(self)
+		# Return to original parent at original index if possible
+		if original_index >= 0 and original_index < original_parent.get_child_count():
+			original_parent.add_child(self)
+			original_parent.move_child(self, original_index)
+			print("Restored to original parent at index: ", original_index)
+		else:
+			original_parent.add_child(self)
+			print("Restored to original parent at end (index was invalid)")
+		
 		position = original_position
 		rotation = 0.0
 		scale = Vector2.ONE

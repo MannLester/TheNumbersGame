@@ -9,6 +9,24 @@ func _ready() -> void:
 	# Make pile cards responsive while maintaining design
 	setup_responsive_layout()
 
+func initialize_pile_with_starting_card():
+	# Draw one random card from CardManager to start the pile (like UNO)
+	if CardManager:
+		var starting_card = CardManager.draw_starting_pile_card()
+		if starting_card != "":
+			print("=== INITIALIZING PILE WITH STARTING CARD ===")
+			print("Starting card: ", starting_card)
+			
+			# Add the starting card to pile
+			add_card_to_pile(starting_card)
+			
+			print("Pile initialized with starting card: ", starting_card)
+			print("===========================================")
+		else:
+			print("ERROR: Could not draw starting card for pile!")
+	else:
+		print("ERROR: CardManager not available for pile initialization!")
+
 func add_card_to_pile(card_id: String):
 	print("=== ADDING CARD TO PILE ===")
 	print("Card ID: ", card_id)
