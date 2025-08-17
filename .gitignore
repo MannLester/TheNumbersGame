@@ -16,3 +16,6 @@ Thumbs.db
 # Editor backup/temporary files
 *.tmp
 *.log
+
+*.apk
+*.apk.idsig
