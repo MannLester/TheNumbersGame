@@ -4,6 +4,7 @@ extends Control
 var piled_cards: Array[String] = []
 var piled_number_cards: Array[String] = []  # Track only number cards
 var card_stack_count: int = 0
+var pile_value: int = 0  # Running sum of number cards in the pile
 
 func _ready() -> void:
 	# Make pile cards responsive while maintaining design
@@ -21,6 +22,7 @@ func initialize_pile_with_starting_card():
 			add_card_to_pile(starting_card)
 			
 			print("Pile initialized with starting card: ", starting_card)
+			print("Starting pile value: ", pile_value)
 			print("===========================================")
 		else:
 			print("ERROR: Could not draw starting card for pile!")
@@ -40,9 +42,16 @@ func add_card_to_pile(card_id: String):
 		var card_type = CardManager.get_card_type(card_id)
 		if card_type == CardManager.CardType.NUMBER:
 			piled_number_cards.append(card_id)
-			print("Added NUMBER card to pile: ", card_id)
+			
+			# Add the card's numeric value to the pile value
+			var card_value = CardManager.get_card_value(card_id)
+			pile_value += card_value
+			
+			print("Added NUMBER card to pile: ", card_id, " (value: ", card_value, ")")
+			print("NEW PILE VALUE: ", pile_value)
 		else:
-			print("Added OPERATOR card to pile: ", card_id)
+			print("Added OPERATOR card to pile: ", card_id, " (pile value unchanged)")
+			print("CURRENT PILE VALUE: ", pile_value)
 	
 	# Safety check for CardManager
 	if not CardManager:
@@ -97,6 +106,9 @@ func add_card_to_pile(card_id: String):
 		
 		# Update pile counter display
 		update_pile_counter()
+		
+		# Update pile value display
+		update_pile_value_display()
 	else:
 		print("ERROR: Could not find card container in pile!")
 
@@ -152,6 +164,18 @@ func update_pile_counter():
 			print("===========================")
 		else:
 			counter_label.text = str(actual_number_cards) + " / ?"
+
+func update_pile_value_display():
+	# Update the "Pile Value: X" label
+	var pile_value_label = $VBoxContainer/Label3
+	if pile_value_label:
+		pile_value_label.text = "Pile Value: " + str(pile_value)
+		print("=== PILE VALUE UPDATED ===")
+		print("Current pile value: ", pile_value)
+		print("Display text: ", pile_value_label.text)
+		print("==========================")
+	else:
+		print("ERROR: Pile value label not found!")
 
 func count_actual_number_cards_in_pile() -> int:
 	# Count actual number card nodes in the pile container
