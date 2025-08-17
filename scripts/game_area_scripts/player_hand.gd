@@ -64,6 +64,33 @@ func initialize_starting_pile():
 	print("=== STARTING PILE INITIALIZATION COMPLETE ===")
 	print("")
 
+func update_operator_icon(current_operator: String):
+	# Update the operator icon in the player hand based on current operator
+	var operator_icon = $MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control/TextureRect
+	if operator_icon:
+		var texture_path = ""
+		match current_operator:
+			"+":
+				texture_path = "res://assets/icons/Add  Icon (1).png"
+			"-":
+				texture_path = "res://assets/icons/Subtract Icon (1).png"
+			"*":
+				texture_path = "res://assets/icons/Multiply Icon (3).png"
+			"/":
+				texture_path = "res://assets/icons/Divide Icon (1).png"
+			_:
+				texture_path = "res://assets/icons/Add  Icon (1).png"  # Default to addition
+		
+		# Load and set the texture
+		var texture = load(texture_path)
+		if texture:
+			operator_icon.texture = texture
+			print("Updated operator icon to: ", current_operator, " (", texture_path, ")")
+		else:
+			print("ERROR: Could not load operator texture: ", texture_path)
+	else:
+		print("ERROR: Could not find operator icon TextureRect")
+
 func setup_initial_cards():
 	# Remove existing placeholder cards
 	var cards_container = $MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer

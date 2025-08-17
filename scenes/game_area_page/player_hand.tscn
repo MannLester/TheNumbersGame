@@ -82,8 +82,9 @@ vertical_alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control"]
 layout_mode = 0
+offset_top = -1.0
 offset_right = 40.0
-offset_bottom = 40.0
+offset_bottom = 39.0
 texture = ExtResource("2_057kf")
 
 [node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]

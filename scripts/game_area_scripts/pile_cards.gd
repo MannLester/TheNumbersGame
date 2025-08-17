@@ -5,6 +5,7 @@ var piled_cards: Array[String] = []
 var piled_number_cards: Array[String] = []  # Track only number cards
 var card_stack_count: int = 0
 var pile_value: int = 0  # Running sum of number cards in the pile
+var current_operation: String = "+"  # Current operation to apply (starts with addition)
 
 func _ready() -> void:
 	# Make pile cards responsive while maintaining design
@@ -18,11 +19,28 @@ func initialize_pile_with_starting_card():
 			print("=== INITIALIZING PILE WITH STARTING CARD ===")
 			print("Starting card: ", starting_card)
 			
-			# Add the starting card to pile
-			add_card_to_pile(starting_card)
+			# For the starting card, set pile value directly (no operation applied)
+			if CardManager.get_card_type(starting_card) == CardManager.CardType.NUMBER:
+				pile_value = CardManager.get_card_value(starting_card)
+				print("Starting card is NUMBER: ", starting_card, " (value: ", pile_value, ")")
+				print("Current operation: + (default)")
+			else:
+				# Starting card is an operator - set the operation but pile value stays 0
+				current_operation = CardManager.get_card_value(starting_card)
+				pile_value = 0
+				print("Starting card is OPERATOR: ", starting_card, " (", current_operation, ")")
+				print("Pile value remains: 0")
+			
+			# Add the starting card to pile (this will update displays)
+			add_card_to_pile_without_calculation(starting_card)
+			
+			# Update visual cues for starting operator
+			update_panel_colors(current_operation)
+			update_player_hand_operator_icon(current_operation)
 			
 			print("Pile initialized with starting card: ", starting_card)
 			print("Starting pile value: ", pile_value)
+			print("Starting operation: ", current_operation)
 			print("===========================================")
 		else:
 			print("ERROR: Could not draw starting card for pile!")
@@ -43,74 +61,30 @@ func add_card_to_pile(card_id: String):
 		if card_type == CardManager.CardType.NUMBER:
 			piled_number_cards.append(card_id)
 			
-			# Add the card's numeric value to the pile value
+			# Get the card's numeric value
 			var card_value = CardManager.get_card_value(card_id)
-			pile_value += card_value
+			
+			# Apply the current operation to update pile value
+			var previous_value = pile_value
+			pile_value = apply_operation(pile_value, card_value, current_operation)
 			
 			print("Added NUMBER card to pile: ", card_id, " (value: ", card_value, ")")
-			print("NEW PILE VALUE: ", pile_value)
+			print("Operation: ", previous_value, " ", current_operation, " ", card_value, " = ", pile_value)
 		else:
-			print("Added OPERATOR card to pile: ", card_id, " (pile value unchanged)")
-			print("CURRENT PILE VALUE: ", pile_value)
+			# It's an operator card - update the current operation
+			var operator_symbol = CardManager.get_card_value(card_id)
+			current_operation = operator_symbol
+			
+			print("Added OPERATOR card to pile: ", card_id, " (", operator_symbol, ")")
+			print("Current operation changed to: ", current_operation)
+			print("CURRENT PILE VALUE: ", pile_value, " (unchanged)")
+			
+			# Update visual cues for operator change
+			update_panel_colors(current_operation)
+			update_player_hand_operator_icon(current_operation)
 	
-	# Safety check for CardManager
-	if not CardManager:
-		print("Error: CardManager not found!")
-		return
-	
-	# Create new card instance for the pile
-	var card_scene = preload("res://scenes/card_node.tscn")
-	var card_instance = card_scene.instantiate()
-	
-	# Setup the card with its ID and texture
-	var texture_path = CardManager.get_card_texture_path(card_id)
-	card_instance.setup_card(card_id, texture_path)
-	
-	# MAKE THE CARD IMMOVABLE using the dedicated method
-	if card_instance.has_method("mark_as_pile_card"):
-		card_instance.mark_as_pile_card()
-	else:
-		# Fallback method if mark_as_pile_card doesn't exist
-		card_instance.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		card_instance.set_process_input(false)
-		card_instance.set_process_unhandled_input(false)
-	
-	# Disconnect any existing drag signals to prevent dragging
-	if card_instance.has_signal("drag_started"):
-		# Disconnect all connections for drag signals
-		for connection in card_instance.drag_started.get_connections():
-			card_instance.drag_started.disconnect(connection.callable)
-		for connection in card_instance.drag_ended.get_connections():
-			card_instance.drag_ended.disconnect(connection.callable)
-	
-	# Add to the card container
-	var card_container = $VBoxContainer/Control
-	if card_container:
-		card_container.add_child(card_instance)
-		
-		# Position the card at the center of the container
-		# The container is 150x220, so center is at 75x110
-		var container_center = Vector2(75, 110)  # Half of 150x220
-		card_instance.position = container_center - Vector2(50, 70)  # Offset by half card size (100x140)
-		
-		# Apply stacking effects AFTER positioning
-		apply_stacking_effects(card_instance, card_stack_count)
-		
-		print("SUCCESS: Added immovable card ", card_id, " to pile center.")
-		print("Card positioned at: ", card_instance.position)
-		print("Total cards in pile: ", count_actual_total_cards_in_pile())
-		print("Number cards in pile: ", count_actual_number_cards_in_pile())
-		print("Operator cards in pile: ", get_pile_operator_card_count())
-		print("Stack position: ", card_stack_count)
-		print("Card is now immovable and cannot be dragged.")
-		
-		# Update pile counter display
-		update_pile_counter()
-		
-		# Update pile value display
-		update_pile_value_display()
-	else:
-		print("ERROR: Could not find card container in pile!")
+	# Create and display the visual card
+	create_and_display_pile_card(card_id)
 
 func apply_stacking_effects(card_instance: Control, stack_position: int):
 	# Apply random rotation (±15 degrees for more variety)
@@ -176,6 +150,148 @@ func update_pile_value_display():
 		print("==========================")
 	else:
 		print("ERROR: Pile value label not found!")
+
+func update_panel_colors(current_operator: String):
+	# Update the colors of the three panels based on current operator
+	var color_hex = ""
+	match current_operator:
+		"+":
+			color_hex = "#F3F315"  # Addition: Yellow
+		"-":
+			color_hex = "#39FF14"  # Subtraction: Green
+		"*":
+			color_hex = "#FF073A"  # Multiplication: Red
+		"/":
+			color_hex = "#00FFFF"  # Division: Cyan
+		_:
+			color_hex = "#F3F315"  # Default to addition yellow
+	
+	# Convert hex to Color
+	var new_color = Color(color_hex)
+	
+	# Update all three panels
+	var panels = [$Panel, $Panel2, $Panel3]
+	var alphas = [0.509804, 0.196078, 0.117647]  # Original alpha values
+	
+	for i in range(panels.size()):
+		var panel = panels[i]
+		if panel:
+			var style = panel.get_theme_stylebox("panel")
+			if style:
+				var new_style = style.duplicate()
+				# Keep original alpha but change color
+				new_color.a = alphas[i]
+				new_style.bg_color = new_color
+				panel.add_theme_stylebox_override("panel", new_style)
+	
+	print("Updated panel colors to: ", current_operator, " (", color_hex, ")")
+
+func update_player_hand_operator_icon(current_operator: String):
+	# Find the player hand and update its operator icon
+	var player_hand = get_tree().get_first_node_in_group("player_hand")
+	if player_hand and player_hand.has_method("update_operator_icon"):
+		player_hand.update_operator_icon(current_operator)
+	else:
+		print("ERROR: Could not find player hand or update_operator_icon method")
+
+func apply_operation(current_value: int, new_value: int, operation: String) -> int:
+	# Apply the specified operation between current pile value and new number card
+	match operation:
+		"+":
+			return current_value + new_value
+		"-":
+			return current_value - new_value
+		"*":
+			return current_value * new_value
+		"/":
+			# Handle division by zero
+			if new_value == 0:
+				print("WARNING: Division by zero! Keeping current value.")
+				return current_value
+			else:
+				return current_value / new_value
+		_:
+			print("WARNING: Unknown operation '", operation, "'. Using addition as fallback.")
+			return current_value + new_value
+
+func add_card_to_pile_without_calculation(card_id: String):
+	# Add card to pile without applying operations (used for starting card)
+	print("=== ADDING STARTING CARD TO PILE (NO CALCULATION) ===")
+	print("Card ID: ", card_id)
+	
+	# Add card to general pile tracking
+	piled_cards.append(card_id)
+	card_stack_count += 1
+	
+	# Track number cards separately
+	if CardManager:
+		var card_type = CardManager.get_card_type(card_id)
+		if card_type == CardManager.CardType.NUMBER:
+			piled_number_cards.append(card_id)
+	
+	# Create and setup the visual card (same as regular add_card_to_pile)
+	create_and_display_pile_card(card_id)
+
+func create_and_display_pile_card(card_id: String):
+	# Create the visual representation of the card in the pile
+	# Safety check for CardManager
+	if not CardManager:
+		print("Error: CardManager not found!")
+		return
+	
+	# Create new card instance for the pile
+	var card_scene = preload("res://scenes/card_node.tscn")
+	var card_instance = card_scene.instantiate()
+	
+	# Setup the card with its ID and texture
+	var texture_path = CardManager.get_card_texture_path(card_id)
+	card_instance.setup_card(card_id, texture_path)
+	
+	# MAKE THE CARD IMMOVABLE using the dedicated method
+	if card_instance.has_method("mark_as_pile_card"):
+		card_instance.mark_as_pile_card()
+	else:
+		# Fallback method if mark_as_pile_card doesn't exist
+		card_instance.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		card_instance.set_process_input(false)
+		card_instance.set_process_unhandled_input(false)
+	
+	# Disconnect any existing drag signals to prevent dragging
+	if card_instance.has_signal("drag_started"):
+		# Disconnect all connections for drag signals
+		for connection in card_instance.drag_started.get_connections():
+			card_instance.drag_started.disconnect(connection.callable)
+		for connection in card_instance.drag_ended.get_connections():
+			card_instance.drag_ended.disconnect(connection.callable)
+	
+	# Add to the card container
+	var card_container = $VBoxContainer/Control
+	if card_container:
+		card_container.add_child(card_instance)
+		
+		# Position the card at the center of the container
+		# The container is 150x220, so center is at 75x110
+		var container_center = Vector2(75, 110)  # Half of 150x220
+		card_instance.position = container_center - Vector2(50, 70)  # Offset by half card size (100x140)
+		
+		# Apply stacking effects AFTER positioning
+		apply_stacking_effects(card_instance, card_stack_count)
+		
+		print("SUCCESS: Added immovable card ", card_id, " to pile center.")
+		print("Card positioned at: ", card_instance.position)
+		print("Total cards in pile: ", count_actual_total_cards_in_pile())
+		print("Number cards in pile: ", count_actual_number_cards_in_pile())
+		print("Operator cards in pile: ", get_pile_operator_card_count())
+		print("Stack position: ", card_stack_count)
+		print("Card is now immovable and cannot be dragged.")
+		
+		# Update pile counter display
+		update_pile_counter()
+		
+		# Update pile value display
+		update_pile_value_display()
+	else:
+		print("ERROR: Could not find card container in pile!")
 
 func count_actual_number_cards_in_pile() -> int:
 	# Count actual number card nodes in the pile container
