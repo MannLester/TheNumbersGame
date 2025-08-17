@@ -15,7 +15,8 @@ enum CardType {
 	ADDITION,
 	SUBTRACTION,
 	MULTIPLICATION,
-	DIVISION
+	DIVISION,
+	PLUS_MINUS
 }
 
 func _ready():
@@ -38,9 +39,16 @@ func initialize_deck():
 		available_cards.append("mul_" + str(i + 1))    # Multiplication cards
 		available_cards.append("div_" + str(i + 1))    # Division cards
 	
+	# Add plus/minus cards (2 of each color = 8 total)
+	for i in range(2):
+		available_cards.append("plusminus_yellow_" + str(i + 1))  # Yellow plus/minus
+		available_cards.append("plusminus_green_" + str(i + 1))   # Green plus/minus
+		available_cards.append("plusminus_red_" + str(i + 1))     # Red plus/minus
+		available_cards.append("plusminus_blue_" + str(i + 1))    # Blue plus/minus
+	
 	# Shuffle the deck
 	available_cards.shuffle()
-	print("Card deck initialized with ", available_cards.size(), " cards (100 numbers + 32 operators)")
+	print("Card deck initialized with ", available_cards.size(), " cards (100 numbers + 32 operators + 8 plus/minus)")
 
 func setup_card_texture_paths():
 	# Map card identifiers to their texture paths
@@ -69,7 +77,14 @@ func setup_card_texture_paths():
 		card_texture_paths["mul_" + str(i + 1)] = "res://assets/cards/card_operators/card_multiply.jpg"
 		card_texture_paths["div_" + str(i + 1)] = "res://assets/cards/card_operators/card_division.jpg"
 	
-	print("Card texture paths mapped for ", card_texture_paths.size(), " cards (100 numbers + 32 operators)")
+	# Plus/minus cards (different colors but same functionality)
+	for i in range(2):
+		card_texture_paths["plusminus_yellow_" + str(i + 1)] = "res://assets/cards/card_operators/yellow_plus_minus.png"
+		card_texture_paths["plusminus_green_" + str(i + 1)] = "res://assets/cards/card_operators/green_plus_minus.png"
+		card_texture_paths["plusminus_red_" + str(i + 1)] = "res://assets/cards/card_operators/red_plus_minus.png"
+		card_texture_paths["plusminus_blue_" + str(i + 1)] = "res://assets/cards/card_operators/blue_plus_minus.png"
+	
+	print("Card texture paths mapped for ", card_texture_paths.size(), " cards (100 numbers + 32 operators + 8 plus/minus)")
 
 func draw_cards(count: int) -> Array[String]:
 	# Draw specified number of cards from the deck
@@ -109,6 +124,8 @@ func get_card_type(card_id: String) -> CardType:
 		return CardType.MULTIPLICATION
 	elif card_id.begins_with("div_"):
 		return CardType.DIVISION
+	elif card_id.begins_with("plusminus_"):
+		return CardType.PLUS_MINUS
 	else:
 		print("Warning: Unknown card type for ", card_id)
 		return CardType.NUMBER
@@ -125,6 +142,8 @@ func get_card_value(card_id: String):
 		return "*"
 	elif card_id.begins_with("div_"):
 		return "/"
+	elif card_id.begins_with("plusminus_"):
+		return "±"  # Plus/minus symbol
 	else:
 		return ""
 

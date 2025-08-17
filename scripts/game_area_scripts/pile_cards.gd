@@ -73,15 +73,25 @@ func add_card_to_pile(card_id: String):
 		else:
 			# It's an operator card - update the current operation
 			var operator_symbol = CardManager.get_card_value(card_id)
-			current_operation = operator_symbol
 			
-			print("Added OPERATOR card to pile: ", card_id, " (", operator_symbol, ")")
-			print("Current operation changed to: ", current_operation)
-			print("CURRENT PILE VALUE: ", pile_value, " (unchanged)")
-			
-			# Update visual cues for operator change
-			update_panel_colors(current_operation)
-			update_player_hand_operator_icon(current_operation)
+			# Special handling for plus/minus cards
+			if operator_symbol == "±":
+				# Plus/minus card: immediately flip the sign of pile value
+				pile_value = -pile_value
+				print("Added PLUS/MINUS card to pile: ", card_id)
+				print("Pile value sign flipped: ", pile_value)
+				# Keep current operation unchanged for plus/minus
+				# NO visual cue updates for plus/minus cards
+			else:
+				# Regular operator card: change the current operation
+				current_operation = operator_symbol
+				print("Added OPERATOR card to pile: ", card_id, " (", operator_symbol, ")")
+				print("Current operation changed to: ", current_operation)
+				print("CURRENT PILE VALUE: ", pile_value, " (unchanged)")
+				
+				# Update visual cues ONLY for regular operators (+, -, *, /)
+				update_panel_colors(current_operation)
+				update_player_hand_operator_icon(current_operation)
 	
 	# Create and display the visual card
 	create_and_display_pile_card(card_id)
@@ -153,6 +163,7 @@ func update_pile_value_display():
 
 func update_panel_colors(current_operator: String):
 	# Update the colors of the three panels based on current operator
+	# NOTE: Only updates for basic math operators (+, -, *, /), NOT for plus/minus (±)
 	var color_hex = ""
 	match current_operator:
 		"+":
@@ -209,7 +220,7 @@ func apply_operation(current_value: int, new_value: int, operation: String) -> i
 				print("WARNING: Division by zero! Keeping current value.")
 				return current_value
 			else:
-				return current_value / new_value
+				return int(current_value / float(new_value))  # Convert to float first to avoid integer division warning
 		_:
 			print("WARNING: Unknown operation '", operation, "'. Using addition as fallback.")
 			return current_value + new_value

@@ -66,6 +66,7 @@ func initialize_starting_pile():
 
 func update_operator_icon(current_operator: String):
 	# Update the operator icon in the player hand based on current operator
+	# NOTE: Only updates for basic math operators (+, -, *, /), NOT for plus/minus (±)
 	var operator_icon = $MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/Control/TextureRect
 	if operator_icon:
 		var texture_path = ""
@@ -75,7 +76,7 @@ func update_operator_icon(current_operator: String):
 			"-":
 				texture_path = "res://assets/icons/Subtract Icon (1).png"
 			"*":
-				texture_path = "res://assets/icons/Multiply Icon (3).png"
+				texture_path = "res://assets/icons/Multiply Icon (1).png"
 			"/":
 				texture_path = "res://assets/icons/Divide Icon (1).png"
 			_:
