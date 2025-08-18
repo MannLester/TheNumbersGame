@@ -167,7 +167,7 @@ func scale_copyright(scale_factor: float):
 func _on_local_button_pressed():
 	print("Local game selected")
 	# TODO: Navigate to local game setup
-	get_tree().change_scene_to_file("res://scenes/game_area_page/game_area_page.tscn")
+	get_tree().change_scene_to_file("res://scenes/home_page/home_page.tscn")
 
 func _on_online_button_pressed():
 	print("Online game selected")
