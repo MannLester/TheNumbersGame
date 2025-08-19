@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://cghdmb61lirel"]
+[gd_scene load_steps=6 format=3 uid="uid://cghdmb61lirel"]
 
 [ext_resource type="Texture2D" uid="uid://1yucgb6sxlv7" path="res://assets/icons/coin_icon.png" id="1_mihos"]
 [ext_resource type="Texture2D" uid="uid://b3ag00pi3aiuc" path="res://assets/icons/gem_icon.png" id="2_5hkj6"]
 [ext_resource type="Texture2D" uid="uid://cjg03lvn1aq8d" path="res://assets/icons/ticket_icon.png" id="3_htj58"]
+[ext_resource type="Texture2D" uid="uid://ba6qehxdyddsh" path="res://assets/icons/mail_icon.png" id="4_fdba4"]
+[ext_resource type="Texture2D" uid="uid://cbjuv6e2rxvx5" path="res://assets/icons/support_icon.png" id="5_vx0rg"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -57,6 +59,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/Control"]
 layout_mode = 1
@@ -95,6 +100,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/Control2"]
 layout_mode = 1
@@ -133,6 +141,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+text = "0"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/Control3"]
 layout_mode = 1
@@ -160,10 +171,42 @@ custom_minimum_size = Vector2(99, 0)
 layout_mode = 2
 text = "Mail"
 
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/Button2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -41.0
+offset_top = -29.5
+offset_right = 41.0
+offset_bottom = 29.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_fdba4")
+expand_mode = 3
+
 [node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(99, 0)
 layout_mode = 2
 text = "Support"
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2/Button3"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -41.0
+offset_top = -41.0
+offset_right = 41.0
+offset_bottom = 41.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_vx0rg")
+expand_mode = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 104)
