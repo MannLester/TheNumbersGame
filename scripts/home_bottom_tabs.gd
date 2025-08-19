@@ -18,13 +18,86 @@ signal tab_changed(tab_index: int, tab_name: String)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	#Tab Buttons
+	var shop_button = $HomeBottomMargin/HomeBottomContainer/ShopButtonMargin/ShopButton
+	var card_button = $HomeBottomMargin/HomeBottomContainer/CardButtonMargin/CardButton
+	var battle_button =$HomeBottomMargin/HomeBottomContainer/BattleButtonMargin/BattleButton
+	var club_button = $HomeBottomMargin/HomeBottomContainer/ClubButtonMargin/ClubButton
+	var leaderboard_button = $HomeBottomMargin/HomeBottomContainer/LeaderboardButtonMargin/LeaderboardButton
+
 	setup_tabs()
 	setup_responsive_layout()
-	# Set Battle tab as default selected
-	select_tab(2, false)  # Don't emit signal on initial setup
+	
+	# Get the current tab state from GameManager or determine from current scene
+	var current_tab = get_current_tab_from_scene()
+	select_tab(current_tab, false)  # Don't emit signal on initial setup
+	
+	#Tabs Navigation
+	if shop_button:
+		shop_button.pressed.connect(on_shop_button_clicked)
+	if card_button:
+		card_button.pressed.connect(on_card_button_clicked)
+	if battle_button:
+		battle_button.pressed.connect(on_battle_button_clicked)
+	if club_button:
+		club_button.pressed.connect(on_club_button_clicked)
+	if leaderboard_button:
+		leaderboard_button.pressed.connect(on_leaderboard_button_clicked)
+
+# Determine which tab should be selected based on current scene
+func get_current_tab_from_scene() -> int:
+	var current_scene = get_tree().current_scene
+	if current_scene:
+		var scene_name = current_scene.scene_file_path
+		
+		# Map scene paths to tab indices
+		if scene_name.contains("shop_page"):
+			return 0  # Shop
+		elif scene_name.contains("card_collection_page"):
+			return 1  # Cards
+		elif scene_name.contains("home_page"):
+			return 2  # Battle (home)
+		elif scene_name.contains("club_page"):
+			return 3  # Club
+		elif scene_name.contains("leaderboard_page"):
+			return 4  # Leaderboard
+	
+	# Default to Battle if scene not recognized
+	return 2
+
+func on_shop_button_clicked():
+	print("Shop Button selected")
+	select_tab(0, true)  # Update tab state before navigation
+	# Small delay to allow tab animation before scene change
+	await get_tree().create_timer(0.1).timeout
+	get_tree().change_scene_to_file("res://scenes/shop_page/shop_page.tscn")
+
+func on_card_button_clicked():
+	print("Card Button selected")
+	select_tab(1, true)  # Update tab state before navigation
+	await get_tree().create_timer(0.1).timeout
+	get_tree().change_scene_to_file("res://scenes/card_collection_page/card_collection_page.tscn")
+
+func on_battle_button_clicked():
+	print("Battle Button selected")
+	select_tab(2, true)  # Update tab state before navigation
+	await get_tree().create_timer(0.1).timeout
+	get_tree().change_scene_to_file("res://scenes/home_page/home_page.tscn")
+
+func on_club_button_clicked():
+	print("Club Button selected")
+	select_tab(3, true)  # Update tab state before navigation
+	await get_tree().create_timer(0.1).timeout
+	get_tree().change_scene_to_file("res://scenes/club_page/club_page.tscn")
+
+func on_leaderboard_button_clicked():
+	print("Leaderboard Button selected")
+	select_tab(4, true)  # Update tab state before navigation
+	await get_tree().create_timer(0.1).timeout
+	get_tree().change_scene_to_file("res://scenes/leaderboard_page/leaderboard_page.tscn")
 
 func setup_tabs():
-	var hbox = $MarginContainer/HBoxContainer
+	var hbox = $HomeBottomMargin/HomeBottomContainer
 	
 	# Clear existing arrays
 	tab_buttons.clear()
@@ -145,8 +218,8 @@ func apply_responsive_scaling(scale_factor: float):
 	var new_height = max(80, base_tab_size.y * scale_factor)
 	self.custom_minimum_size = Vector2(0, new_height)
 	
-	# Scale HBoxContainer
-	var hbox = $MarginContainer/HBoxContainer
+	# Scale HBoxContainer - Fix the path here
+	var hbox = $HomeBottomMargin/HomeBottomContainer
 	if hbox:
 		var new_tab_width = max(80, base_tab_size.x * scale_factor)
 		hbox.custom_minimum_size = Vector2(new_tab_width, new_height)

@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cxqw11fmgdqvw" path="res://assets/icons/club_icon.png" id="4_q8oi7"]
 [ext_resource type="Texture2D" uid="uid://c83y2c114o2kn" path="res://assets/icons/leaderboard_icon.png" id="5_f216s"]
 
-[node name="Control" type="Control"]
+[node name="HomeBottomTabs" type="Control"]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 3
 anchors_preset = 12
@@ -18,7 +18,7 @@ grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("1_wywqs")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="HomeBottomMargin" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,22 +26,22 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+[node name="HomeBottomContainer" type="HBoxContainer" parent="HomeBottomMargin"]
 custom_minimum_size = Vector2(144, 120)
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+[node name="ShopButtonMargin" type="MarginContainer" parent="HomeBottomMargin/HomeBottomContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/MarginContainer"]
+[node name="ShopButton" type="Button" parent="HomeBottomMargin/HomeBottomContainer/ShopButtonMargin"]
 custom_minimum_size = Vector2(144, 120)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/HBoxContainer/MarginContainer/Button"]
+[node name="ShopButtonColor" type="ColorRect" parent="HomeBottomMargin/HomeBottomContainer/ShopButtonMargin/ShopButton"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -49,7 +49,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/MarginContainer/Button"]
+[node name="ShopButtonIcon" type="TextureRect" parent="HomeBottomMargin/HomeBottomContainer/ShopButtonMargin/ShopButton"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -65,17 +65,17 @@ grow_vertical = 2
 texture = ExtResource("1_nk25n")
 expand_mode = 3
 
-[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+[node name="CardButtonMargin" type="MarginContainer" parent="HomeBottomMargin/HomeBottomContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/MarginContainer2"]
+[node name="CardButton" type="Button" parent="HomeBottomMargin/HomeBottomContainer/CardButtonMargin"]
 custom_minimum_size = Vector2(144, 120)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/HBoxContainer/MarginContainer2/Button"]
+[node name="CardButtonColor" type="ColorRect" parent="HomeBottomMargin/HomeBottomContainer/CardButtonMargin/CardButton"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -83,7 +83,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/MarginContainer2/Button"]
+[node name="CardButtonIcon" type="TextureRect" parent="HomeBottomMargin/HomeBottomContainer/CardButtonMargin/CardButton"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -99,17 +99,17 @@ grow_vertical = 2
 texture = ExtResource("2_khki1")
 expand_mode = 3
 
-[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+[node name="BattleButtonMargin" type="MarginContainer" parent="HomeBottomMargin/HomeBottomContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/MarginContainer3"]
+[node name="BattleButton" type="Button" parent="HomeBottomMargin/HomeBottomContainer/BattleButtonMargin"]
 custom_minimum_size = Vector2(144, 120)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/HBoxContainer/MarginContainer3/Button"]
+[node name="BattleButtonColor" type="ColorRect" parent="HomeBottomMargin/HomeBottomContainer/BattleButtonMargin/BattleButton"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -117,7 +117,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/MarginContainer3/Button"]
+[node name="BattleButtonIcon" type="TextureRect" parent="HomeBottomMargin/HomeBottomContainer/BattleButtonMargin/BattleButton"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -133,17 +133,17 @@ grow_vertical = 2
 texture = ExtResource("3_xn54x")
 expand_mode = 3
 
-[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+[node name="ClubButtonMargin" type="MarginContainer" parent="HomeBottomMargin/HomeBottomContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/MarginContainer4"]
+[node name="ClubButton" type="Button" parent="HomeBottomMargin/HomeBottomContainer/ClubButtonMargin"]
 custom_minimum_size = Vector2(144, 120)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/HBoxContainer/MarginContainer4/Button"]
+[node name="ClubButtonColor" type="ColorRect" parent="HomeBottomMargin/HomeBottomContainer/ClubButtonMargin/ClubButton"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -151,7 +151,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/MarginContainer4/Button"]
+[node name="ClubButtonIcon" type="TextureRect" parent="HomeBottomMargin/HomeBottomContainer/ClubButtonMargin/ClubButton"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -167,17 +167,17 @@ grow_vertical = 2
 texture = ExtResource("4_q8oi7")
 expand_mode = 3
 
-[node name="MarginContainer5" type="MarginContainer" parent="MarginContainer/HBoxContainer"]
+[node name="LeaderboardButtonMargin" type="MarginContainer" parent="HomeBottomMargin/HomeBottomContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/MarginContainer5"]
+[node name="LeaderboardButton" type="Button" parent="HomeBottomMargin/HomeBottomContainer/LeaderboardButtonMargin"]
 custom_minimum_size = Vector2(144, 120)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/HBoxContainer/MarginContainer5/Button"]
+[node name="LeaderboardButtonColor" type="ColorRect" parent="HomeBottomMargin/HomeBottomContainer/LeaderboardButtonMargin/LeaderboardButton"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -185,7 +185,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/MarginContainer5/Button"]
+[node name="LeaderboardButtonIcon" type="TextureRect" parent="HomeBottomMargin/HomeBottomContainer/LeaderboardButtonMargin/LeaderboardButton"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
