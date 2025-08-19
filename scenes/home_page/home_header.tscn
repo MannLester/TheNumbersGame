@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://cghdmb61lirel"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 314.0
+grow_horizontal = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_right = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Profile"
+
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Mail"
+
+[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Customer Support"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 104)
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Tasks"
+
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Events etc,"
