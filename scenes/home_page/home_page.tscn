@@ -1,5 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://u75et5fghmnl"]
+[gd_scene load_steps=6 format=3 uid="uid://u75et5fghmnl"]
 
+[ext_resource type="Script" path="res://scenes/home_page/home_page.gd" id="1_2n8kw"]
+[ext_resource type="Texture2D" uid="uid://de4fjgq72lj4c" path="res://assets/images/backgrounds/blue_background.jpg" id="1_3wjgj"]
 [ext_resource type="PackedScene" uid="uid://c6fl2vycdfhg3" path="res://scenes/home_page/home_bottom_tabs.tscn" id="1_8jfnx"]
 [ext_resource type="PackedScene" uid="uid://b64r24c4lgujx" path="res://scenes/home_page/home_game_mode.tscn" id="1_xqpoj"]
 [ext_resource type="PackedScene" uid="uid://cghdmb61lirel" path="res://scenes/home_page/home_header.tscn" id="3_xtisg"]
@@ -11,15 +13,17 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_2n8kw")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.117647, 0.160784, 0.231373, 1)
+texture = ExtResource("1_3wjgj")
+expand_mode = 3
 
 [node name="Game Modes" parent="." instance=ExtResource("1_xqpoj")]
 layout_mode = 1
