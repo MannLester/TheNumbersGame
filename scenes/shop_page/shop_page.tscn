@@ -1,6 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://bdqmlt1x1juwy"]
+[gd_scene load_steps=8 format=3 uid="uid://bdqmlt1x1juwy"]
 
 [ext_resource type="PackedScene" uid="uid://c6fl2vycdfhg3" path="res://scenes/home_page/home_bottom_tabs.tscn" id="1_bmfl5"]
+[ext_resource type="PackedScene" uid="uid://bxeqiiumlef01" path="res://scenes/home_page/currencies_header.tscn" id="2_c5j1b"]
+[ext_resource type="FontFile" uid="uid://cvpff81povwt7" path="res://assets/fonts/luckiest-guy/LuckiestGuy-Regular.ttf" id="3_5ux0y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_odk0m"]
+bg_color = Color(0, 0.309804, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2pnt5"]
+bg_color = Color(0.498039, 0, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kofbu"]
+bg_color = Color(1, 0.498039, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7tw1t"]
+bg_color = Color(0, 1, 0.309804, 1)
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -21,3 +35,201 @@ color = Color(0.117647, 0.160784, 0.231373, 1)
 
 [node name="Control" parent="." instance=ExtResource("1_bmfl5")]
 layout_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 104.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_right = 9
+
+[node name="Control2" parent="MarginContainer" instance=ExtResource("2_c5j1b")]
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -536.0
+offset_bottom = 520.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -26.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control2/ScrollContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control2/ScrollContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(720, 400)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Panel" type="Panel" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_odk0m")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 9
+
+[node name="Label" type="Label" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control/VBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("3_5ux0y")
+theme_override_font_sizes/font_size = 40
+text = "GAME  ITEMS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control/VBoxContainer"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(720, 400)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Panel" type="Panel" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2pnt5")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control2/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 9
+
+[node name="Label" type="Label" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control2/VBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("3_5ux0y")
+theme_override_font_sizes/font_size = 40
+text = "CARD  DESIGNS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control2/VBoxContainer"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+
+[node name="Control3" type="Control" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(720, 400)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Panel" type="Panel" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control3/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kofbu")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control3/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 9
+
+[node name="Label" type="Label" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control3/VBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("3_5ux0y")
+theme_override_font_sizes/font_size = 40
+text = "COINS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control3/VBoxContainer"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+
+[node name="Control4" type="Control" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(720, 400)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Panel" type="Panel" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control4/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7tw1t")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control4/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 9
+
+[node name="Label" type="Label" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control4/VBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = ExtResource("3_5ux0y")
+theme_override_font_sizes/font_size = 40
+text = "GEMS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control4/VBoxContainer"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2

@@ -1,12 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://cghdmb61lirel"]
+[gd_scene load_steps=5 format=3 uid="uid://cghdmb61lirel"]
 
-[ext_resource type="Texture2D" uid="uid://1yucgb6sxlv7" path="res://assets/icons/coin_icon.png" id="1_mihos"]
-[ext_resource type="Texture2D" uid="uid://b3ag00pi3aiuc" path="res://assets/icons/gem_icon.png" id="2_5hkj6"]
-[ext_resource type="Texture2D" uid="uid://cjg03lvn1aq8d" path="res://assets/icons/ticket_icon.png" id="3_htj58"]
+[ext_resource type="PackedScene" uid="uid://bxeqiiumlef01" path="res://scenes/home_page/currencies_header.tscn" id="1_dgoww"]
+[ext_resource type="Script" path="res://scripts/home_scripts/home_header.gd" id="1_header_script"]
 [ext_resource type="Texture2D" uid="uid://ba6qehxdyddsh" path="res://assets/icons/mail_icon.png" id="4_fdba4"]
 [ext_resource type="Texture2D" uid="uid://cbjuv6e2rxvx5" path="res://assets/icons/support_icon.png" id="5_vx0rg"]
 
-[node name="Control" type="Control"]
+[node name="Control2" type="Control"]
 layout_mode = 3
 anchors_preset = 10
 anchor_right = 1.0
@@ -14,6 +13,7 @@ offset_left = 3.0
 offset_right = 3.0
 offset_bottom = 314.0
 grow_horizontal = 2
+script = ExtResource("1_header_script")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(0, 104)
@@ -24,146 +24,24 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 35
 theme_override_constants/margin_right = 9
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 30
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 104)
+[node name="Control" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_dgoww")]
 layout_mode = 2
-theme_override_constants/separation = 90
-
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
-size_flags_horizontal = 0
-
-[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/HBoxContainer/Control"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -139.0
-offset_top = -15.0
-offset_bottom = 15.0
-grow_horizontal = 0
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Control/Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "0"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/Control"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -23.5
-offset_right = 47.0
-offset_bottom = 23.5
-grow_vertical = 2
-texture = ExtResource("1_mihos")
-expand_mode = 3
-
-[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
-size_flags_horizontal = 0
-
-[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/HBoxContainer/Control2"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -139.0
-offset_top = -15.0
-offset_bottom = 15.0
-grow_horizontal = 0
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Control2/Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "0"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/Control2"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -23.5
-offset_right = 47.0
-offset_bottom = 23.5
-grow_vertical = 2
-texture = ExtResource("2_5hkj6")
-expand_mode = 3
-
-[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(170, 0)
-layout_mode = 2
-size_flags_horizontal = 0
-
-[node name="Panel" type="Panel" parent="MarginContainer/VBoxContainer/HBoxContainer/Control3"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -139.0
-offset_top = -15.0
-offset_bottom = 15.0
-grow_horizontal = 0
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/Control3/Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "0"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/Control3"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -23.5
-offset_right = 47.0
-offset_bottom = 23.5
-grow_vertical = 2
-texture = ExtResource("3_htj58")
-expand_mode = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 104)
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Profile"
 
 [node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
@@ -214,13 +92,11 @@ layout_mode = 2
 theme_override_constants/separation = 5
 
 [node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
-custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 3
 text = "Tasks"
 
 [node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
-custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 3
 text = "Events etc,"
