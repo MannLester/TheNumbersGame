@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://c6fl2vycdfhg3"]
 
 [ext_resource type="Texture2D" uid="uid://djdvly6rox3li" path="res://assets/icons/shop_icon.png" id="1_nk25n"]
-[ext_resource type="Script" path="res://scripts/home_bottom_tabs.gd" id="1_wywqs"]
+[ext_resource type="Script" path="res://scripts/home_scripts/home_bottom_tabs.gd" id="1_wywqs"]
 [ext_resource type="Texture2D" uid="uid://b4lvp851werfu" path="res://assets/icons/cards_icon.png" id="2_khki1"]
 [ext_resource type="Texture2D" uid="uid://cpo2pit51mefd" path="res://assets/icons/battle_icon.png" id="3_xn54x"]
 [ext_resource type="Texture2D" uid="uid://cxqw11fmgdqvw" path="res://assets/icons/club_icon.png" id="4_q8oi7"]

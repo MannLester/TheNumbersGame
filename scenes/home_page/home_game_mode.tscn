@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://b64r24c4lgujx"]
+[gd_scene load_steps=5 format=3 uid="uid://b64r24c4lgujx"]
 
 [ext_resource type="Texture2D" uid="uid://br8pxn5powut3" path="res://assets/icons/normal_mode.png" id="1_cyar5"]
+[ext_resource type="Script" path="res://scripts/home_scripts/home_game_mode.gd" id="1_script"]
 [ext_resource type="FontFile" uid="uid://cvpff81povwt7" path="res://assets/fonts/luckiest-guy/LuckiestGuy-Regular.ttf" id="2_exbci"]
 [ext_resource type="Texture2D" uid="uid://bfed6fpvwfa4m" path="res://assets/buttons/Local Button (2).png" id="3_21dkc"]
 
@@ -14,6 +15,7 @@ offset_top = -396.72
 offset_bottom = 423.28
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_script")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -76,9 +78,10 @@ theme_override_constants/separation = -20
 custom_minimum_size = Vector2(0, 800)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_vertical = 6
 texture = ExtResource("1_cyar5")
 expand_mode = 3
+stretch_mode = 5
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/TextureRect"]
 layout_mode = 1
