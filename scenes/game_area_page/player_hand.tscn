@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cofwvo6ec8r62" path="res://assets/icons/Add  Icon (1).png" id="2_057kf"]
 [ext_resource type="Texture2D" uid="uid://bvl7h887skfuo" path="res://assets/icons/Counter (2).png" id="3_07ela"]
 [ext_resource type="FontFile" uid="uid://c2583ujg5wnpc" path="res://assets/fonts/poppins/Poppins-SemiBold.ttf" id="4_26a4u"]
-[ext_resource type="PackedScene" uid="uid://cfn6r8ehvra2t" path="res://scenes/card_node.tscn" id="6_uurad"]
+[ext_resource type="PackedScene" uid="uid://cfn6r8ehvra2t" path="res://components/card_node.tscn" id="6_uurad"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eal6h"]
 bg_color = Color(0.85098, 0.85098, 0.85098, 1)

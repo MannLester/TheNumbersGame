@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dlw8wf0lfarf1"]
 
 [ext_resource type="Script" path="res://scripts/game_area_scripts/enemy_4_card.gd" id="1_5nf0h"]
-[ext_resource type="PackedScene" uid="uid://w2tn7iqfhscl" path="res://scenes/enemy_card.tscn" id="1_k4673"]
+[ext_resource type="PackedScene" uid="uid://w2tn7iqfhscl" path="res://components/enemy_card.tscn" id="1_k4673"]
 
 [node name="Control" type="Control"]
 custom_minimum_size = Vector2(140, 300)

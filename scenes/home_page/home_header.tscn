@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://cghdmb61lirel"]
+[gd_scene load_steps=4 format=3 uid="uid://cghdmb61lirel"]
 
 [ext_resource type="PackedScene" uid="uid://bxeqiiumlef01" path="res://scenes/home_page/currencies_header.tscn" id="1_dgoww"]
-[ext_resource type="Script" path="res://scripts/home_scripts/home_header.gd" id="1_header_script"]
 [ext_resource type="Texture2D" uid="uid://ba6qehxdyddsh" path="res://assets/icons/mail_icon.png" id="4_fdba4"]
 [ext_resource type="Texture2D" uid="uid://cbjuv6e2rxvx5" path="res://assets/icons/support_icon.png" id="5_vx0rg"]
 
@@ -13,7 +12,6 @@ offset_left = 3.0
 offset_right = 3.0
 offset_bottom = 314.0
 grow_horizontal = 2
-script = ExtResource("1_header_script")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(0, 104)
@@ -31,7 +29,7 @@ theme_override_constants/margin_right = 9
 layout_mode = 2
 theme_override_constants/separation = 30
 
-[node name="Control" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_dgoww")]
+[node name="CurrenciesHeader" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_dgoww")]
 layout_mode = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]

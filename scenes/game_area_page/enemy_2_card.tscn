@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bnhftkn8vespa"]
 
-[ext_resource type="PackedScene" uid="uid://w2tn7iqfhscl" path="res://scenes/enemy_card.tscn" id="1_ivxf0"]
+[ext_resource type="PackedScene" uid="uid://w2tn7iqfhscl" path="res://components/enemy_card.tscn" id="1_ivxf0"]
 [ext_resource type="Script" path="res://scripts/game_area_scripts/enemy_2_card.gd" id="1_vpdmd"]
 
 [node name="Control" type="Control"]

@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bdqmlt1x1juwy"]
+[gd_scene load_steps=9 format=3 uid="uid://bdqmlt1x1juwy"]
 
 [ext_resource type="PackedScene" uid="uid://c6fl2vycdfhg3" path="res://scenes/home_page/home_bottom_tabs.tscn" id="1_bmfl5"]
 [ext_resource type="PackedScene" uid="uid://bxeqiiumlef01" path="res://scenes/home_page/currencies_header.tscn" id="2_c5j1b"]
 [ext_resource type="FontFile" uid="uid://cvpff81povwt7" path="res://assets/fonts/luckiest-guy/LuckiestGuy-Regular.ttf" id="3_5ux0y"]
+[ext_resource type="PackedScene" uid="uid://c30akr0fqjda3" path="res://components/shop_cards.tscn" id="4_6dc18"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_odk0m"]
 bg_color = Color(0, 0.309804, 1, 1)
@@ -110,8 +111,29 @@ text = "GAME  ITEMS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 15
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control/VBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control/VBoxContainer/MarginContainer/ScrollContainer"]
+custom_minimum_size = Vector2(220, 300)
+layout_mode = 2
+
+[node name="Control" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
+layout_mode = 2
+
+[node name="Control2" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
+layout_mode = 2
+
+[node name="Control3" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
+layout_mode = 2
+
+[node name="Control4" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
 layout_mode = 2
 
 [node name="Control2" type="Control" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer"]
@@ -150,8 +172,29 @@ text = "CARD  DESIGNS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control2/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control2/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 15
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control2/VBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control2/VBoxContainer/MarginContainer/ScrollContainer"]
+custom_minimum_size = Vector2(220, 300)
+layout_mode = 2
+
+[node name="Control" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control2/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
+layout_mode = 2
+
+[node name="Control2" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control2/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
+layout_mode = 2
+
+[node name="Control3" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control2/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
+layout_mode = 2
+
+[node name="Control4" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control2/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
 layout_mode = 2
 
 [node name="Control3" type="Control" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer"]
@@ -190,8 +233,29 @@ text = "COINS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control3/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control3/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 15
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control3/VBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control3/VBoxContainer/MarginContainer/ScrollContainer"]
+custom_minimum_size = Vector2(220, 300)
+layout_mode = 2
+
+[node name="Control" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control3/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
+layout_mode = 2
+
+[node name="Control2" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control3/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
+layout_mode = 2
+
+[node name="Control3" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control3/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
+layout_mode = 2
+
+[node name="Control4" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control3/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
 layout_mode = 2
 
 [node name="Control4" type="Control" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer"]
@@ -230,6 +294,27 @@ text = "GEMS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control4/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control4/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 15
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control4/VBoxContainer/MarginContainer"]
 custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control4/VBoxContainer/MarginContainer/ScrollContainer"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+
+[node name="Control" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control4/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
+layout_mode = 2
+
+[node name="Control2" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control4/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
+layout_mode = 2
+
+[node name="Control3" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control4/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
+layout_mode = 2
+
+[node name="Control4" parent="Control2/ScrollContainer/MarginContainer/VBoxContainer/Control4/VBoxContainer/MarginContainer/ScrollContainer/HBoxContainer" instance=ExtResource("4_6dc18")]
 layout_mode = 2
