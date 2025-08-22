@@ -38,8 +38,7 @@ func _ready() -> void:
 	
 	mouse_filter = MOUSE_FILTER_STOP
 	
-	# Connect the gui_input signal
-	gui_input.connect(_on_gui_input)  
+	# Note: gui_input signal is already connected in the scene file  
 
 func _on_gui_input(event: InputEvent) -> void:
 	# Don't process input if card is in pile
