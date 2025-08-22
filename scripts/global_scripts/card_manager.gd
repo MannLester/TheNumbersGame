@@ -70,7 +70,7 @@ enum CardType {
 
 func _ready():
 	initialize_deck()
-	setup_card_texture_paths()
+	# Note: Legacy setup_card_texture_paths() removed - now using dynamic backgrounds
 
 func initialize_deck():
 	# Initialize deck with cards 1-100 + operator cards
@@ -99,8 +99,11 @@ func initialize_deck():
 	available_cards.shuffle()
 	print("Card deck initialized with ", available_cards.size(), " cards (100 numbers + 32 operators + 8 plus/minus)")
 
-func setup_card_texture_paths():
-	# Map card identifiers to their texture paths
+# LEGACY FUNCTIONS - NO LONGER USED WITH DYNAMIC SYSTEM
+# These functions are kept for reference but not called
+func setup_card_texture_paths_legacy():
+	# DEPRECATED: Map card identifiers to their texture paths
+	# Now using dynamic backgrounds instead of individual card images
 	card_texture_paths.clear()
 	
 	# Number cards 1-25
@@ -126,14 +129,14 @@ func setup_card_texture_paths():
 		card_texture_paths["mul_" + str(i + 1)] = "res://assets/cards/card_operators/card_multiply.jpg"
 		card_texture_paths["div_" + str(i + 1)] = "res://assets/cards/card_operators/card_division.jpg"
 	
-	# Plus/minus cards (different colors but same functionality)
-	for i in range(2):
-		card_texture_paths["plusminus_yellow_" + str(i + 1)] = "res://assets/cards/card_operators/yellow_plus_minus.png"
-		card_texture_paths["plusminus_green_" + str(i + 1)] = "res://assets/cards/card_operators/green_plus_minus.png"
-		card_texture_paths["plusminus_red_" + str(i + 1)] = "res://assets/cards/card_operators/red_plus_minus.png"
-		card_texture_paths["plusminus_blue_" + str(i + 1)] = "res://assets/cards/card_operators/blue_plus_minus.png"
+	# LEGACY DEPRECATED: Plus/minus cards now use dynamic system
+	# for i in range(2):
+	#	card_texture_paths["plusminus_yellow_" + str(i + 1)] = "res://assets/cards/card_operators/yellow_plus_minus.png"
+	#	card_texture_paths["plusminus_green_" + str(i + 1)] = "res://assets/cards/card_operators/green_plus_minus.png"
+	#	card_texture_paths["plusminus_red_" + str(i + 1)] = "res://assets/cards/card_operators/red_plus_minus.png"
+	#	card_texture_paths["plusminus_blue_" + str(i + 1)] = "res://assets/cards/card_operators/blue_plus_minus.png"
 	
-	print("Card texture paths mapped for ", card_texture_paths.size(), " cards (100 numbers + 32 operators + 8 plus/minus)")
+	print("LEGACY: Card texture paths mapped for ", card_texture_paths.size(), " cards (100 numbers + 32 operators)")
 
 func draw_cards(count: int) -> Array[String]:
 	# Draw specified number of cards from the deck
@@ -155,10 +158,12 @@ func draw_cards(count: int) -> Array[String]:
 	return drawn_cards
 
 func get_card_texture_path(card_id: String) -> String:
+	# LEGACY FUNCTION - Only used for backward compatibility
+	# New system uses get_card_design_type() + get_design_asset_path()
 	if card_id in card_texture_paths:
 		return card_texture_paths[card_id]
 	else:
-		print("Warning: No texture path found for card ", card_id)
+		print("Warning: No texture path found for card ", card_id, " (using legacy system)")
 		return ""
 
 func get_card_type(card_id: String) -> CardType:
