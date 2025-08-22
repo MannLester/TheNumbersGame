@@ -106,9 +106,9 @@ func setup_initial_cards():
 		# Draw 10 random cards from CardManager
 		player_cards = CardManager.draw_cards(10)
 		
-		# Create CardNode instances for each drawn card
+		# Create CardNode instances for each drawn card using new dynamic system
 		for card_id in player_cards:
-			var card_scene = preload("res://scenes/card_node.tscn")
+			var card_scene = preload("res://components/card_node.tscn")
 			var card_instance = card_scene.instantiate()
 			
 			# Add to container first
@@ -117,9 +117,11 @@ func setup_initial_cards():
 			# Wait for the node to be ready
 			await get_tree().process_frame
 			
-			# Setup the card with its ID and texture
-			var texture_path = CardManager.get_card_texture_path(card_id)
-			card_instance.setup_card(card_id, texture_path)
+			# Setup the card with its ID and dynamic design (NEW APPROACH)
+			var design_type = CardManager.get_card_design_type(card_id)
+			card_instance.setup_card(card_id, design_type)
+			
+			print("Created hand card with dynamic design: ", card_id, " (", design_type, " design)")
 			
 			# Connect drag signals immediately after card setup
 			if card_instance.has_signal("drag_started"):
@@ -421,12 +423,14 @@ func _on_draw_button_pressed():
 		player_cards.append(card_id)
 		
 		# Create new CardNode instance
-		var card_scene = preload("res://scenes/card_node.tscn")
+		var card_scene = preload("res://components/card_node.tscn")
 		var card_instance = card_scene.instantiate()
 		
-		# Setup the card with its ID and texture
-		var texture_path = CardManager.get_card_texture_path(card_id)
-		card_instance.setup_card(card_id, texture_path)
+		# Setup the card with its ID and dynamic design (NEW APPROACH)
+		var design_type = CardManager.get_card_design_type(card_id)
+		card_instance.setup_card(card_id, design_type)
+		
+		print("Drew new card with dynamic design: ", card_id, " (", design_type, " design)")
 		
 		# Add to container
 		var cards_container = $MarginContainer/VBoxContainer/MarginContainer2/ScrollContainer/MarginContainer/HBoxContainer

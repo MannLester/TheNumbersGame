@@ -244,19 +244,21 @@ func add_card_to_pile_without_calculation(card_id: String):
 	create_and_display_pile_card(card_id)
 
 func create_and_display_pile_card(card_id: String):
-	# Create the visual representation of the card in the pile
+	# Create the visual representation of the card in the pile using new dynamic system
 	# Safety check for CardManager
 	if not CardManager:
 		print("Error: CardManager not found!")
 		return
 	
 	# Create new card instance for the pile
-	var card_scene = preload("res://scenes/card_node.tscn")
+	var card_scene = preload("res://components/card_node.tscn")
 	var card_instance = card_scene.instantiate()
 	
-	# Setup the card with its ID and texture
-	var texture_path = CardManager.get_card_texture_path(card_id)
-	card_instance.setup_card(card_id, texture_path)
+	# Setup the card with its ID and dynamic design (NEW APPROACH)
+	var design_type = CardManager.get_card_design_type(card_id)
+	card_instance.setup_card(card_id, design_type)
+	
+	print("Created pile card with dynamic design: ", card_id, " (", design_type, " design)")
 	
 	# MAKE THE CARD IMMOVABLE using the dedicated method
 	if card_instance.has_method("mark_as_pile_card"):

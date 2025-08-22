@@ -330,17 +330,342 @@ func setup_responsive_card():
 	
 	custom_minimum_size = Vector2(new_width, new_height)
 
-func setup_card(new_card_id: String, texture_path: String):
-	# Setup card with specific ID and texture
+func setup_card(new_card_id: String, design_type: String = "blue"):
+	# Setup card with specific ID and dynamic design
 	card_id = new_card_id
-	card_texture_path = texture_path
 	
 	# Safety check for CardManager
 	if not CardManager:
 		print("Error: CardManager not found!")
 		return
 	
-	# Determine card type and set appropriate data
+	# Get the correct asset path for the design using CardManager
+	var background_path = CardManager.get_design_asset_path(design_type)
+	var texture = load(background_path) as Texture2D
+	if texture:
+		$TextureRect.texture = texture
+		print("Card ", card_id, " setup with design: ", design_type, " (theme: ", CardManager.get_current_theme(), ")")
+	else:
+		print("Warning: Could not load background design: ", background_path)
+		# Fallback to classic design
+		var fallback_path = "res://assets/cards/card_designs/classic_design/card_" + design_type + "_bg.png"
+		var fallback_texture = load(fallback_path) as Texture2D
+		if fallback_texture:
+			$TextureRect.texture = fallback_texture
+			print("Using fallback design: ", fallback_path)
+		else:
+			print("Error: Fallback design also failed: ", fallback_path)
+			return
+	
+	# Determine card type and set appropriate text
+	var card_type = CardManager.get_card_type(card_id)
+	var label = $CardLabel
+	
+	if card_type == CardManager.CardType.NUMBER:
+		card_number = CardManager.get_card_value(card_id)
+		card_operator = ""
+		name = "Card" + str(card_number)
+		
+		# Set number text
+		label.text = str(card_number)
+		
+		# Adjust font size based on number of digits
+		var font_size = 52
+		if card_number >= 100:
+			font_size = 42
+		elif card_number >= 10:
+			font_size = 48
+		
+		label.label_settings.font_size = font_size
+		
+	else:
+		card_number = 0
+		card_operator = CardManager.get_card_value(card_id)
+		name = "Card" + card_operator
+		
+		# Set operator text with proper symbols
+		var display_text = card_operator
+		if card_operator == "±":
+			display_text = "+/-"
+		
+		label.text = display_text
+		
+		# Operators use slightly smaller font
+		label.label_settings.font_size = 45
+	
+	# Update neon color based on design type
+	print("=== CARD SETUP DEBUG ===")
+	print("Card ID: ", card_id)
+	print("Design type: ", design_type)
+	print("=========================")
+	update_neon_effect(design_type)
+	
+	print("Card ", card_id, " neon effect applied for design: ", design_type)
+
+func update_neon_effect(design_type: String):
+	var label = $CardLabel
+	if not label:
+		return
+	
+	# Get current theme for enhanced neon effects
+	var current_theme = CardManager.get_current_theme() if CardManager else "classic"
+	
+	# Base colors for different design types
+	var neon_colors = get_neon_colors_for_design(design_type, current_theme)
+	
+	# Create a new LabelSettings resource to avoid modifying shared resources
+	var new_label_settings = LabelSettings.new()
+	
+	# Copy font settings from the original
+	if label.label_settings:
+		new_label_settings.font = label.label_settings.font
+		new_label_settings.font_size = label.label_settings.font_size
+	else:
+		# Fallback font settings
+		var poppins_black = load("res://assets/fonts/poppins/Poppins-Black.ttf")
+		new_label_settings.font = poppins_black
+		new_label_settings.font_size = 52
+	
+	# Apply neon colors
+	new_label_settings.font_color = neon_colors["font_color"]
+	new_label_settings.outline_color = neon_colors["outline"]
+	new_label_settings.shadow_color = neon_colors["shadow"]
+	
+	# Set shadow offset
+	new_label_settings.shadow_offset = Vector2(0, 0)
+	
+	# Adjust intensity based on theme - 100% neon effect
+	match current_theme:
+		"neon":
+			# Extra bright neon effect
+			new_label_settings.outline_size = 4
+			new_label_settings.shadow_size = 12
+		"royal":
+			# Golden glow effect
+			new_label_settings.outline_size = 3
+			new_label_settings.shadow_size = 10
+		"seasonal_winter":
+			# Icy glow effect
+			new_label_settings.outline_size = 2
+			new_label_settings.shadow_size = 6
+		_: # classic - 100% neon effect
+			# Maximum neon effect
+			new_label_settings.outline_size = 4
+			new_label_settings.shadow_size = 12
+	
+	# Apply the new label settings
+	label.label_settings = new_label_settings
+	
+	print("=== APPLIED COLORS ===")
+	print("Font color: ", new_label_settings.font_color)
+	print("Outline color: ", new_label_settings.outline_color)
+	print("Shadow color: ", new_label_settings.shadow_color)
+	print("Outline size: ", new_label_settings.outline_size)
+	print("======================")
+
+func get_neon_colors_for_design(design_type: String, theme_name: String) -> Dictionary:
+	# Return appropriate neon colors based on design and theme
+	var colors = {}
+	
+	# Determine base color family from design type
+	var color_family = get_color_family_from_design(design_type)
+	
+	print("=== NEON COLOR DEBUG ===")
+	print("Design type: ", design_type)
+	print("Color family: ", color_family)
+	print("Current theme: ", theme_name)
+	print("========================")
+	print("========================")
+	
+	match theme_name:
+		"neon":
+			colors = get_enhanced_neon_colors(color_family)
+		"royal":
+			colors = get_royal_glow_colors(color_family)
+		"seasonal_winter":
+			colors = get_winter_glow_colors(color_family)
+		_: # classic
+			colors = get_classic_neon_colors(color_family)
+	
+	return colors
+
+func get_color_family_from_design(design_type: String) -> String:
+	# Extract color family from design name
+	var design_lower = design_type.to_lower()
+	
+	print("=== COLOR FAMILY DEBUG ===")
+	print("Input design_type: ", design_type)
+	print("Lowercase: ", design_lower)
+	
+	if "yellow" in design_lower or "gold" in design_lower:
+		print("Detected: YELLOW")
+		return "yellow"
+	elif "green" in design_lower or "silver" in design_lower:
+		print("Detected: GREEN")
+		return "green"
+	elif "red" in design_lower or "bronze" in design_lower:
+		print("Detected: RED")
+		return "red"
+	elif "blue" in design_lower or "platinum" in design_lower or "cyan" in design_lower:
+		print("Detected: BLUE")
+		return "blue"
+	elif "white" in design_lower or "ice" in design_lower:
+		print("Detected: WHITE")
+		return "white"
+	elif "purple" in design_lower:
+		print("Detected: PURPLE")
+		return "purple"
+	else:
+		# Fallback: check exact matches for basic colors
+		match design_type:
+			"yellow":
+				print("Exact match: YELLOW")
+				return "yellow"
+			"green":
+				print("Exact match: GREEN")
+				return "green"
+			"red":
+				print("Exact match: RED")
+				return "red"
+			"blue":
+				print("Exact match: BLUE")
+				return "blue"
+			_:
+				print("Warning: Unknown design type '", design_type, "', defaulting to blue")
+				print("=========================")
+				return "blue"
+
+func get_classic_neon_colors(color_family: String) -> Dictionary:
+	match color_family:
+		"yellow":
+			return {
+				"font_color": Color(1, 0.95, 0.85, 1),       # White with yellow hint
+				"outline": Color(1, 0.788, 0.2, 1),          # #ffc933 border
+				"shadow": Color(1, 0.788, 0.2, 0.6)          # Subtle yellow shadow
+			}
+		"green":
+			return {
+				"font_color": Color(0.9, 1, 0.95, 1),        # White with green hint
+				"outline": Color(0.216, 0.49, 0.451, 1),     # #377d73 border
+				"shadow": Color(0.216, 0.49, 0.451, 0.6)     # Subtle green shadow
+			}
+		"red":
+			return {
+				"font_color": Color(1, 0.92, 0.9, 1),        # White with red hint
+				"outline": Color(0.545, 0.267, 0.243, 1),    # #8b443e border
+				"shadow": Color(0.545, 0.267, 0.243, 0.6)    # Subtle red shadow
+			}
+		"blue":
+			return {
+				"font_color": Color(0.9, 0.96, 1, 1),        # White with blue hint
+				"outline": Color(0.447, 0.671, 0.741, 1),    # #72abbd border
+				"shadow": Color(0.447, 0.671, 0.741, 0.6)    # Subtle blue shadow
+			}
+		_:
+			return {
+				"font_color": Color(1, 1, 1, 1),             # Pure white
+				"outline": Color(0.8, 0.8, 0.8, 1),          # Light gray border
+				"shadow": Color(0.8, 0.8, 0.8, 0.6)          # Subtle gray shadow
+			}
+
+func get_enhanced_neon_colors(color_family: String) -> Dictionary:
+	# More intense neon colors for neon theme - still using the new white+hint approach
+	match color_family:
+		"yellow":
+			return {
+				"font_color": Color(1, 0.98, 0.9, 1),       # Brighter white with yellow hint
+				"outline": Color(1, 1, 0, 1),               # Pure yellow border
+				"shadow": Color(1, 1, 0, 0.8)               # Intense yellow glow
+			}
+		"green":
+			return {
+				"font_color": Color(0.95, 1, 0.98, 1),      # Brighter white with green hint
+				"outline": Color(0, 1, 0, 1),               # Pure green border
+				"shadow": Color(0, 1, 0, 0.8)               # Intense green glow
+			}
+		"red":
+			return {
+				"font_color": Color(1, 0.95, 0.95, 1),      # Brighter white with red hint
+				"outline": Color(1, 0, 0.5, 1),             # Hot pink border
+				"shadow": Color(1, 0, 0.5, 0.8)             # Intense pink glow
+			}
+		"blue":
+			return {
+				"font_color": Color(0.95, 0.98, 1, 1),      # Brighter white with blue hint
+				"outline": Color(0, 1, 1, 1),               # Pure cyan border
+				"shadow": Color(0, 1, 1, 0.8)               # Intense cyan glow
+			}
+		_:
+			return get_classic_neon_colors(color_family)
+
+func get_royal_glow_colors(color_family: String) -> Dictionary:
+	# Golden/premium glow colors
+	match color_family:
+		"yellow":
+			return {
+				"font_color": Color(1, 0.84, 0, 1),     # Pure gold
+				"outline": Color(1, 0.84, 0, 1),        # Pure gold outline
+				"shadow": Color(1, 0.84, 0, 0.9)        # Gold glow
+			}
+		"green":
+			return {
+				"font_color": Color(0.75, 0.75, 0.75, 1), # Silver
+				"outline": Color(0.75, 0.75, 0.75, 1),    # Silver outline
+				"shadow": Color(0.75, 0.75, 0.75, 0.9)    # Silver glow
+			}
+		"red":
+			return {
+				"font_color": Color(0.8, 0.5, 0.2, 1),  # Bronze
+				"outline": Color(0.8, 0.5, 0.2, 1),     # Bronze outline
+				"shadow": Color(0.8, 0.5, 0.2, 0.9)     # Bronze glow
+			}
+		"blue":
+			return {
+				"font_color": Color(0.9, 0.9, 1, 1),    # Platinum
+				"outline": Color(0.9, 0.9, 1, 1),       # Platinum outline
+				"shadow": Color(0.9, 0.9, 1, 0.9)       # Platinum glow
+			}
+		_:
+			return get_classic_neon_colors(color_family)
+
+func get_winter_glow_colors(color_family: String) -> Dictionary:
+	# Icy/winter glow colors
+	match color_family:
+		"blue":
+			return {
+				"font_color": Color(0.7, 0.9, 1, 1),    # Ice blue
+				"outline": Color(0.7, 0.9, 1, 1),       # Ice blue outline
+				"shadow": Color(0.7, 0.9, 1, 0.8)       # Ice blue glow
+			}
+		"white":
+			return {
+				"font_color": Color(1, 1, 1, 1),        # Pure white
+				"outline": Color(1, 1, 1, 1),           # Pure white outline
+				"shadow": Color(0.9, 0.95, 1, 0.8)      # Frosty glow
+			}
+		"purple":
+			return {
+				"font_color": Color(0.8, 0.6, 1, 1),    # Winter purple
+				"outline": Color(0.8, 0.6, 1, 1),       # Winter purple outline
+				"shadow": Color(0.8, 0.6, 1, 0.8)       # Purple glow
+			}
+		_:
+			# Use icy variants of other colors
+			return {
+				"font_color": Color(0.8, 0.9, 1, 1),    # Icy tint
+				"outline": Color(0.8, 0.9, 1, 1),       # Icy outline
+				"shadow": Color(0.8, 0.9, 1, 0.8)       # Icy glow
+			}
+
+# Legacy function for backward compatibility
+func setup_card_legacy(new_card_id: String, texture_path: String):
+	card_id = new_card_id
+	card_texture_path = texture_path
+	
+	if not CardManager:
+		print("Error: CardManager not found!")
+		return
+	
 	var card_type = CardManager.get_card_type(card_id)
 	if card_type == CardManager.CardType.NUMBER:
 		card_number = CardManager.get_card_value(card_id)
@@ -351,7 +676,6 @@ func setup_card(new_card_id: String, texture_path: String):
 		card_operator = CardManager.get_card_value(card_id)
 		name = "Card" + card_operator
 	
-	# Load and set the texture
 	var texture = load(texture_path) as Texture2D
 	if texture:
 		$TextureRect.texture = texture

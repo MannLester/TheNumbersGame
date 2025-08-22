@@ -1,6 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://cfn6r8ehvra2t"]
+[gd_scene load_steps=4 format=3 uid="uid://cfn6r8ehvra2t"]
 
 [ext_resource type="Script" path="res://scripts/component_scripts/card_node.gd" id="1_6xc1l"]
+[ext_resource type="FontFile" uid="uid://kya128yh7igl" path="res://assets/fonts/poppins/Poppins-Black.ttf" id="2_poppins_black"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_1"]
+font = ExtResource("2_poppins_black")
+font_size = 52
+outline_size = 4
+shadow_size = 12
+shadow_color = Color(1, 1, 1, 0.6)
+shadow_offset = Vector2(0, 0)
 
 [node name="CardNode" type="Control"]
 clip_contents = true
@@ -22,5 +31,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 5
+
+[node name="CardLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -25.0
+offset_right = 50.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "42"
+label_settings = SubResource("LabelSettings_1")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]
