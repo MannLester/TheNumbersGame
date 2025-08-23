@@ -27,14 +27,12 @@ func _on_mode_changed(_mode_index: int, mode_name: String):
 
 func _on_play_button_pressed(selected_mode):
 	print("Home page received play button press for mode: ", selected_mode)
-	# TODO: Navigate to game scene with the selected mode
-	# For now, just print the mode
-	match selected_mode:
-		0: # Normal Mode
-			print("Starting Normal Mode game...")
-		1: # Rank Mode  
-			print("Starting Rank Mode game...")
-		2: # Club Mode
-			print("Starting Club Mode game...")
-		3: # Competition Mode
-			print("Starting Competition Mode game...")
+	
+	# Store selected mode for later use (all modes use same mechanics for now)
+	var mode_names = ["Normal Mode", "Rank Mode", "Club Mode", "Competition Mode"]
+	var selected_mode_name = mode_names[selected_mode] if selected_mode < mode_names.size() else "Unknown Mode"
+	
+	print("Starting ", selected_mode_name, " - Creating multiplayer lobby...")
+	
+	# Navigate to lobby/room creation for all modes
+	get_tree().change_scene_to_file("res://scenes/lobby_page/lobby_page.tscn")

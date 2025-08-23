@@ -18,6 +18,7 @@ config/icon="res://assets/icons/icon.svg"
 [autoload]
 
 CardManager="*res://scripts/global_scripts/card_manager.gd"
+GameManager="*res://scripts/global_scripts/game_manager.gd"
 
 [display]
 
